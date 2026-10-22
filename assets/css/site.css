@@ -510,6 +510,11 @@ h1, h2, h3 {
 /* Text keeps its measure; tables may use the full column. */
 .prose > * { max-width: var(--measure); }
 .prose > table { max-width: 100%; width: max-content; }
+.prose > .highlighter-rouge {
+  max-width: 100%;
+  width: fit-content;
+  min-width: min(100%, var(--measure));
+}
 
 .prose > :first-child { margin-top: 0; }
 

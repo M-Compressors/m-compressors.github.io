@@ -17,6 +17,9 @@ github_org: M-Compressors
 
 # jekyll-seo-tag
 logo: /assets/img/logo.png
+webmaster_verifications:
+  google: jOknOkZ2heN_Dqmt0JmbcbRcDaC38GntizRzPlTZgqk
+  yandex: b61cfae761fea766
 social:
   name: M-Compressors
   links:

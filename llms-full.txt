@@ -37,8 +37,10 @@ Summary:
 {% endif %}
 {%- capture nl %}
 {% endcapture -%}
-{%- assign body = post.content | replace: "</p>", nl | replace: "</h2>", nl | replace: "</h3>", nl | replace: "</li>", nl | replace: "<li>", "- " | replace: "</tr>", nl | replace: "</td>", " | " | replace: "</th>", " | " | replace: "</pre>", nl -%}
-{{ body | strip_html | replace: "&lt;", "<" | replace: "&gt;", ">" | replace: "&quot;", '"' | replace: "&#39;", "'" | replace: "&amp;", "&" | strip }}
+{%- capture delim %}{{ nl }}---{{ nl }}{% endcapture -%}
+{%- capture raw %}{% include_relative {{ post.path }} %}{% endcapture -%}
+{%- assign front = raw | split: delim | first -%}
+{{ nl }}{{ raw | remove_first: front | remove_first: delim | strip }}
 {%- if post.faq %}
 
 Questions:

@@ -24,7 +24,7 @@
 - name: ngx_mbrotli
   license: MIT
   kind: NGINX module
-  version: 0.4.4
+  version: 0.4.5
   summary: >-
     Drop-in replacement for google/ngx_brotli that can compress on NGINX thread
     pools, so large responses no longer block the worker's event loop.
