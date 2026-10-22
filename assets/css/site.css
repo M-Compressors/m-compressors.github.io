@@ -585,6 +585,52 @@ h1, h2, h3 {
 .prose td strong { color: var(--verdigris); }
 
 .prose figure { margin: 2em 0; }
+
+/* Bar charts: a row per variant, bar length set by --w (0–1) from the markup */
+
+.chart { font-size: var(--fs-small); line-height: 1.35; }
+.chart-title { font-weight: 600; margin: 0 0 1rem; }
+.chart-group + .chart-group { margin-top: 1.1rem; }
+.chart-group > p { margin: 0 0 0.35rem; font-style: italic; color: var(--ink-soft); }
+.chart-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.1rem;
+  padding-block: 0.2rem;
+}
+.chart-track {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.chart-bar {
+  flex: none;
+  width: calc((100% - 5rem) * var(--w));
+  min-width: 2px;
+  height: 0.65rem;
+  border-radius: 2px;
+  background: var(--rule);
+}
+.chart-bar.is-stock { background: var(--ink-soft); }
+.chart-bar.is-loop { background: var(--ink-soft); opacity: 0.55; }
+.chart-bar.is-pool { background: var(--verdigris); }
+.chart-value {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-stretch: 87.5%;
+  font-variation-settings: "wdth" 87.5;
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+.prose .chart figcaption { margin-top: 1rem; }
+
+@media (min-width: 36rem) {
+  .chart-row {
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: center;
+  }
+}
 .prose figcaption,
 .table-note {
   font-size: var(--fs-small);
