@@ -5,6 +5,7 @@ description: >-
   repository, on Debian, Ubuntu, RHEL-compatible and other Linux systems, or against
   an nginx you compile yourself.
 date: 2026-10-22 10:30:00 +0300
+image: /assets/img/og/build-ngx-mzstd-from-source.png
 projects: [ngx_mzstd, mzstd]
 tags: [nginx, zstd, zstandard, linux, rust, build]
 summary:

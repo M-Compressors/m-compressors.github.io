@@ -4,6 +4,7 @@ description: >-
   On-the-fly Brotli blocks the NGINX event loop. ngx_mbrotli on a thread pool against
   google/ngx_brotli: p99 latency, requests per second, CPU time and memory.
 date: 2026-10-22 12:50:00 +0300
+image: /assets/img/og/ngx-mbrotli-thread-pool-benchmarks.png
 projects: [ngx_mbrotli, mbrotli]
 tags: [nginx, brotli, thread-pool, latency, benchmarks, performance]
 summary:

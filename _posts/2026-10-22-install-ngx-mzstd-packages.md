@@ -5,6 +5,7 @@ description: >-
   RHEL, AlmaLinux, Rocky Linux and Amazon Linux, for nginx.org's nginx and for the
   distribution's own.
 date: 2026-10-22 09:30:00 +0300
+image: /assets/img/og/install-ngx-mzstd-packages.png
 projects: [ngx_mzstd]
 tags: [nginx, zstd, zstandard, linux, debian, ubuntu, rhel]
 summary:

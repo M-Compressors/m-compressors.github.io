@@ -5,6 +5,7 @@ description: >-
   RHEL, AlmaLinux, Rocky Linux and Amazon Linux, for nginx.org's nginx and for the
   distribution's own.
 date: 2026-10-22 09:00:00 +0300
+image: /assets/img/og/install-ngx-mbrotli-packages.png
 projects: [ngx_mbrotli]
 tags: [nginx, brotli, linux, debian, ubuntu, rhel]
 summary:

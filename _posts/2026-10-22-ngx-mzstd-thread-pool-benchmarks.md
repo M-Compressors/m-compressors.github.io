@@ -4,6 +4,7 @@ description: >-
   On-the-fly zstd blocks the NGINX event loop. ngx_mzstd on a thread pool against
   tokers/zstd-nginx-module: p99 latency, requests per second, CPU time and memory.
 date: 2026-10-22 13:00:00 +0300
+image: /assets/img/og/ngx-mzstd-thread-pool-benchmarks.png
 projects: [ngx_mzstd, mzstd]
 tags: [nginx, zstd, zstandard, thread-pool, latency, benchmarks, performance]
 summary:
