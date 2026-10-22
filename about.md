@@ -26,7 +26,8 @@ this holds and the cases where it does not, such as parallel compression.
 ## Maintainer
 
 The projects are written and maintained by
-[{{ site.author.name }}]({{ site.author.url }}). Bug reports and questions go to
+[{{ site.author.name }}]({{ site.data.authors.mnwa.page | relative_url }}), a backend
+developer from Saint Petersburg. Bug reports and questions go to
 the issue tracker of the project they concern on
 [GitHub](https://github.com/{{ site.github_org }}).
 

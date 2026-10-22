@@ -4,7 +4,8 @@
   is about and its FAQ, so search engines and LLMs can tie facts to sources.
 {%- endcomment -%}
 {%- assign org_id = site.url | append: "/#organization" -%}
-{%- assign person_id = site.url | append: "/#author" -%}
+{%- assign me = site.data.authors.mnwa -%}
+{%- assign person_id = me.url | append: "#person" -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -22,10 +23,26 @@
     {
       "@type": "Person",
       "@id": {{ person_id | jsonify }},
-      "name": {{ site.author.name | jsonify }},
-      "url": {{ site.author.url | jsonify }},
-      "worksFor": { "@id": {{ org_id | jsonify }} }
+      "name": {{ me.name | jsonify }},
+      "url": {{ me.url | jsonify }},
+      "image": {{ me.picture | absolute_url | jsonify }},
+      "jobTitle": {{ me.job_title | jsonify }},
+      "description": {{ me.bio | strip | jsonify }},
+      "homeLocation": { "@type": "Place", "name": {{ me.location | jsonify }} },
+      "worksFor": { "@type": "Organization", "name": {{ me.works_for.name | jsonify }}, "url": {{ me.works_for.url | jsonify }} },
+      "memberOf": { "@id": {{ org_id | jsonify }} },
+      "knowsAbout": ["Rust", "Data compression", "Brotli", "Zstandard", "NGINX"],
+      "sameAs": {{ me.same_as | jsonify }}
     }
+    {%- if page.layout == "author" %},
+    {
+      "@type": "ProfilePage",
+      "@id": {{ page.url | absolute_url | jsonify }},
+      "url": {{ page.url | absolute_url | jsonify }},
+      "name": {{ page.title | jsonify }},
+      "mainEntity": { "@id": {{ person_id | jsonify }} }
+    }
+    {%- endif %}
     {%- assign about = page.projects | default: empty -%}
     {%- if page.url == "/" -%}{%- assign about = site.data.projects | map: "name" -%}{%- endif -%}
     {%- for name in about -%}
@@ -40,7 +57,8 @@
       "programmingLanguage": "Rust",
       "version": {{ p.version | jsonify }},
       "license": [{% assign lics = p.license | split: " OR " %}{% for l in lics %}{{ "https://spdx.org/licenses/" | append: l | append: ".html" | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
-      "publisher": { "@id": {{ org_id | jsonify }} }
+      "publisher": { "@id": {{ org_id | jsonify }} },
+      "author": { "@id": {{ person_id | jsonify }} }
       {%- if p.crate %},
       "sameAs": [{{ p.crate | jsonify }}{% if p.docs %}, {{ p.docs | jsonify }}{% endif %}]
       {%- endif %}

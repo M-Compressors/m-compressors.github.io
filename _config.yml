@@ -11,7 +11,7 @@ timezone: Europe/Moscow
 
 author:
   name: Mikhail Panfilov
-  url: https://github.com/Mnwa
+  url: https://m-compressors.github.io/authors/mikhail-panfilov/
 
 github_org: M-Compressors
 
@@ -50,6 +50,7 @@ defaults:
     values:
       layout: post
       image: /assets/img/og.png
+      author: mnwa
   - scope:
       path: ""
     values:

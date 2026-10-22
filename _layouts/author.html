@@ -1,0 +1,45 @@
+---
+layout: default
+---
+{%- assign author = site.data.authors[page.author_key] -%}
+<article class="post page">
+  <header class="post-head">
+    <div class="author-head">
+      <img src="{{ author.picture | relative_url }}" alt="{{ author.name }}" width="120" height="120">
+      <div>
+        <h1>{{ author.name }}</h1>
+        <p class="standfirst">{{ author.job_title }}, {{ author.location }}</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="prose">
+    <p>{{ author.bio }}</p>
+    {{ content }}
+
+    <h2>Links</h2>
+    <ul>
+      {%- for l in author.links %}
+      <li><a href="{{ l.url }}" rel="me noopener">{{ l.label }}</a></li>
+      {%- endfor %}
+      <li>Works at <a href="{{ author.works_for.url }}">{{ author.works_for.name }}</a></li>
+    </ul>
+
+    {%- assign posts = site.posts | where: "author", page.author_key %}
+    {%- if posts.size > 0 %}
+    <h2>Posts</h2>
+    <ul>
+      {%- for post in posts %}
+      <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a>, <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %B %Y" }}</time></li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+
+    <h2>Projects</h2>
+    <ul>
+      {%- for p in site.data.projects %}
+      <li><a href="{{ p.repo }}">{{ p.name }}</a>: {{ p.summary | strip }}</li>
+      {%- endfor %}
+    </ul>
+  </div>
+</article>

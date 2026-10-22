@@ -6,7 +6,7 @@ sitemap: false
 
 > {{ site.description | strip }}
 
-{{ site.title }} is an open-source organization on GitHub ({{ 'https://github.com/' | append: site.github_org }}) maintained by {{ site.author.name }}. Its codecs are written in Rust with `unsafe` forbidden in production code. Key facts:
+{{ site.title }} is an open-source organization on GitHub ({{ 'https://github.com/' | append: site.github_org }}) maintained by {{ site.author.name }} ({{ site.data.authors.mnwa.url }}): {{ site.data.authors.mnwa.bio | strip }} Its codecs are written in Rust with `unsafe` forbidden in production code. Key facts:
 
 - mbrotli writes the same bytes as Google Brotli 1.2.0 at qualities 0–11 under equivalent streaming settings. In the independent lzbench 2.4 run (Silesia corpus, one core of an AMD EPYC 9555P) mbrotli 0.5.2 compressed 14–20% faster than Google Brotli at qualities 8 and 11, with the same compressed size; decompression was 3–10% slower.
 - mzstd's single-threaded output is byte-identical to zstd 1.5.7 at levels -131072 to 22. In the project's own benchmarks it compresses at a median 1.112× and decompresses at 1.111× zstd's speed.
@@ -28,5 +28,6 @@ No posts have been published yet.
 ## Optional
 
 - [About]({{ '/about/' | absolute_url }}): who maintains the projects and how to reach them
+- [{{ site.author.name }}]({{ site.data.authors.mnwa.url }}): the author's page, with links to GitHub, crates.io and Telegram
 - [Full text for LLMs]({{ '/llms-full.txt' | absolute_url }}): every post as plain text in one file
 - [RSS feed]({{ '/feed.xml' | absolute_url }})

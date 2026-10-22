@@ -1,0 +1,29 @@
+# Keyed by the `author` value in a post's front matter. jekyll-seo-tag reads
+# name and url from here; the rest feeds the byline, author page and JSON-LD.
+mnwa:
+  name: Mikhail Panfilov
+  url: https://m-compressors.github.io/authors/mikhail-panfilov/
+  page: /authors/mikhail-panfilov/
+  picture: /assets/img/mikhail-panfilov.jpg
+  picture_small: /assets/img/mikhail-panfilov-96.jpg
+  job_title: Backend developer
+  location: Saint Petersburg, Russia
+  works_for:
+    name: Aisory
+    url: https://aisory.tech/
+  github: https://github.com/Mnwa
+  bio: >-
+    Backend developer from Saint Petersburg, working at Aisory. Author of mbrotli,
+    mzstd and the ngx_mbrotli and ngx_mzstd NGINX modules: Brotli and Zstandard
+    rewritten in safe Rust.
+  same_as:
+    - https://github.com/Mnwa
+    - https://crates.io/users/Mnwa
+    - https://t.me/Mnwamnowich
+  links:
+    - label: GitHub
+      url: https://github.com/Mnwa
+    - label: crates.io
+      url: https://crates.io/users/Mnwa
+    - label: Telegram
+      url: https://t.me/Mnwamnowich

@@ -3,6 +3,7 @@ layout: default
 ---
 {%- assign words = content | strip_html | number_of_words -%}
 {%- assign minutes = words | divided_by: 220 | at_least: 1 -%}
+{%- assign author = site.data.authors[page.author] | default: site.data.authors.mnwa -%}
 <article class="post">
   <header class="post-head">
     <h1>{{ page.title }}</h1>
@@ -23,7 +24,10 @@ layout: default
       {%- endif %}
       <div>
         <dt>Author</dt>
-        <dd><a href="{{ site.author.url }}" rel="author"><span>{{ site.author.name }}</span></a></dd>
+        <dd class="byline">
+          <img src="{{ author.picture_small | relative_url }}" alt="" width="32" height="32">
+          <a href="{{ author.page | relative_url }}" rel="author">{{ author.name }}</a>
+        </dd>
       </div>
       <div>
         <dt>Reading time</dt>
@@ -70,9 +74,20 @@ layout: default
   </section>
   {%- endif %}
 
+  <section class="author-box" aria-labelledby="author-title">
+    <img src="{{ author.picture | relative_url }}" alt="{{ author.name }}" width="88" height="88" loading="lazy">
+    <div>
+      <h2 id="author-title"><a href="{{ author.page | relative_url }}" rel="author">{{ author.name }}</a></h2>
+      <p>{{ author.bio }}</p>
+      <p class="author-links">
+        {%- for l in author.links %}<a href="{{ l.url }}" rel="me noopener">{{ l.label }}</a>{% endfor %}
+      </p>
+    </div>
+  </section>
+
   <section class="cite" aria-labelledby="cite-title">
     <h2 id="cite-title">Cite this post</h2>
-    <p>{{ site.author.name }}. “{{ page.title }}.” {{ site.title }}, {{ page.date | date: "%-d %B %Y" }}. <a href="{{ page.url | absolute_url }}">{{ page.url | absolute_url }}</a></p>
+    <p>{{ author.name }}. “{{ page.title }}.” {{ site.title }}, {{ page.date | date: "%-d %B %Y" }}. <a href="{{ page.url | absolute_url }}">{{ page.url | absolute_url }}</a></p>
   </section>
 
   <nav class="post-nav" aria-label="More posts">
