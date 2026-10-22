@@ -13,6 +13,12 @@
   --plum: #7A3E6E;
   --ochre: #8A5A00;
 
+  /* Chart series, checked for colour-blind separation on --paper. */
+  --chart-stock: #A3ADB0;
+  --chart-loop: #B97C1E;
+  --chart-pool1: #7A3E6E;
+  --chart-pool4: #0E8C78;
+
   --mono: "Martian Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
 
@@ -39,6 +45,10 @@
     --verdigris-wash: #163A36;
     --plum: #D69BC8;
     --ochre: #E0B45C;
+    --chart-stock: #5C6568;
+    --chart-loop: #A8742A;
+    --chart-pool1: #A84D97;
+    --chart-pool4: #37A08C;
   }
 }
 :root[data-theme="dark"] {
@@ -51,6 +61,10 @@
   --verdigris-wash: #163A36;
   --plum: #D69BC8;
   --ochre: #E0B45C;
+  --chart-stock: #5C6568;
+  --chart-loop: #A8742A;
+  --chart-pool1: #A84D97;
+  --chart-pool4: #37A08C;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -586,51 +600,6 @@ h1, h2, h3 {
 
 .prose figure { margin: 2em 0; }
 
-/* Bar charts: a row per variant, bar length set by --w (0–1) from the markup */
-
-.chart { font-size: var(--fs-small); line-height: 1.35; }
-.chart-title { font-weight: 600; margin: 0 0 1rem; }
-.chart-group + .chart-group { margin-top: 1.1rem; }
-.chart-group > p { margin: 0 0 0.35rem; font-style: italic; color: var(--ink-soft); }
-.chart-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.1rem;
-  padding-block: 0.2rem;
-}
-.chart-track {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.chart-bar {
-  flex: none;
-  width: calc((100% - 5rem) * var(--w));
-  min-width: 2px;
-  height: 0.65rem;
-  border-radius: 2px;
-  background: var(--rule);
-}
-.chart-bar.is-stock { background: var(--ink-soft); }
-.chart-bar.is-loop { background: var(--ink-soft); opacity: 0.55; }
-.chart-bar.is-pool { background: var(--verdigris); }
-.chart-value {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-stretch: 87.5%;
-  font-variation-settings: "wdth" 87.5;
-  font-variant-numeric: lining-nums tabular-nums;
-  white-space: nowrap;
-}
-.prose .chart figcaption { margin-top: 1rem; }
-
-@media (min-width: 36rem) {
-  .chart-row {
-    grid-template-columns: 11.5rem minmax(0, 1fr);
-    gap: 0.75rem;
-    align-items: center;
-  }
-}
 .prose figcaption,
 .table-note {
   font-size: var(--fs-small);
@@ -638,6 +607,213 @@ h1, h2, h3 {
   font-style: italic;
   margin-top: -1em;
 }
+
+/* Charts: plain HTML, generated with the numbers. A mark's --x is its place on
+   the value axis, 0–1, of the plot minus --tip, the room kept for the value
+   label at its end. Series colours were checked for colour-blind separation;
+   the stock modules are grey because they are the point of comparison. */
+
+.prose .chart { margin: 2.5em 0; }
+.chart {
+  --tip: 4.25rem;
+  --label: 10.5rem;
+  font-size: var(--fs-small);
+  line-height: 1.35;
+  hyphens: manual;
+  -webkit-hyphens: manual;
+}
+.chart-title {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-stretch: 80%;
+  font-variation-settings: "wdth" 80;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.prose .chart-sub { margin: 0.3rem 0 0; color: var(--ink-soft); }
+
+.prose .chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+.prose .chart-legend li { display: flex; align-items: center; gap: 0.45rem; margin: 0; }
+.key {
+  flex: none;
+  width: 0.75rem;
+  height: 0.5625rem;
+  border-radius: 0 3px 3px 0;
+  background: var(--c);
+}
+.key.round { width: 0.625rem; height: 0.625rem; border-radius: 50%; }
+.key.ring { background: transparent; box-shadow: inset 0 0 0 2px var(--c); }
+.key.ref { width: 1.5px; height: 0.875rem; border-radius: 0; background: var(--ink-soft); }
+
+.c-stock { --c: var(--chart-stock); }
+.c-loop { --c: var(--chart-loop); }
+.c-pool1 { --c: var(--chart-pool1); }
+.c-pool4 { --c: var(--chart-pool4); }
+
+.chart-body { position: relative; margin-top: 1.1rem; }
+
+/* Gridlines span the plot column under every row. */
+.chart-grid {
+  position: absolute;
+  inset: 1.4rem 0 0 0;
+  pointer-events: none;
+}
+.chart-grid span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc((100% - var(--tip)) * var(--x));
+  width: 1px;
+  background: var(--rule);
+}
+.chart-grid .ref { width: 1.5px; background: var(--ink-soft); }
+
+.chart-axis,
+.chart-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.chart-axis { height: 1.4rem; }
+.chart-axis > :first-child { display: none; }
+.tick {
+  position: absolute;
+  top: 0;
+  left: calc((100% - var(--tip)) * var(--x));
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-stretch: 87.5%;
+  font-variation-settings: "wdth" 87.5;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.tick.first { transform: none; }
+
+.prose .chart-group {
+  position: relative;
+  width: fit-content;
+  margin: 0.9rem 0 0.15rem;
+  padding-right: 0.5rem;
+  background: var(--paper);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.chart-axis + .chart-group { margin-top: 0.2rem; }
+
+.chart-row { gap: 0.15rem; padding-block: 0.35rem; }
+.chart-label {
+  position: relative;
+  width: fit-content;
+  padding-right: 0.5rem;
+  background: var(--paper);
+  align-self: center;
+}
+.plot { position: relative; display: block; min-width: 0; }
+
+/* Bars: one per series, the value at its tip. */
+.bars { display: flex; flex-direction: column; gap: 3px; }
+.bar { display: flex; align-items: center; height: 0.75rem; }
+.bar i {
+  flex: none;
+  width: calc((100% - var(--tip)) * var(--x));
+  min-width: 2px;
+  height: 0.5625rem;
+  border-radius: 0 3px 3px 0;
+  background: var(--c);
+}
+.bar b,
+.dot-value {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  font-stretch: 87.5%;
+  font-variation-settings: "wdth" 87.5;
+  font-variant-numeric: lining-nums tabular-nums;
+  line-height: 1;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+/* The surface behind a value keeps gridlines from running through it. */
+.bar b { position: relative; margin-left: 0.25rem; padding: 0.1rem 0.15rem; background: var(--paper); }
+
+/* Dots: series on one line, joined by a span, a surface ring around each. */
+.dots { height: 1.25rem; }
+.dots .span {
+  position: absolute;
+  top: 50%;
+  left: calc((100% - var(--tip)) * var(--a));
+  width: calc((100% - var(--tip)) * (var(--b) - var(--a)));
+  height: 2px;
+  margin-top: -1px;
+  background: var(--rule);
+}
+.dot {
+  position: absolute;
+  top: 50%;
+  left: calc((100% - var(--tip)) * var(--x));
+  width: 0.625rem;
+  height: 0.625rem;
+  margin: -0.3125rem 0 0 -0.3125rem;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 0 2px var(--paper);
+}
+.dot.ring { background: var(--paper); box-shadow: inset 0 0 0 2px var(--c), 0 0 0 2px var(--paper); }
+.dot-value {
+  position: absolute;
+  top: 50%;
+  left: calc((100% - var(--tip)) * var(--x) + 0.45rem);
+  padding: 0.1rem 0.15rem;
+  background: var(--paper);
+  transform: translateY(-50%);
+}
+.dot-value.left { transform: translate(calc(-100% - 0.9rem), -50%); }
+
+.prose .chart figcaption { margin-top: 1.1rem; }
+
+@media (min-width: 36rem) {
+  .tick.first { transform: translateX(-50%); }
+  .chart-axis,
+  .chart-row {
+    grid-template-columns: var(--label) minmax(0, 1fr);
+    column-gap: 0.75rem;
+  }
+  .chart-axis > :first-child { display: block; }
+  .chart-grid { left: calc(var(--label) + 0.75rem); }
+  .chart-label { width: auto; padding-right: 0; background: none; }
+  .prose .chart-group { padding-left: 0; }
+}
+
+/* The table behind each chart, folded away under it. */
+
+.prose details.numbers {
+  margin: -1.25em 0 2.5em;
+  font-size: var(--fs-small);
+}
+.prose details.numbers summary {
+  cursor: pointer;
+  width: fit-content;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.2em;
+}
+.prose details.numbers summary:hover { color: var(--verdigris); text-decoration-color: var(--verdigris); }
+.prose details.numbers[open] summary { margin-bottom: 0.25rem; }
+.prose details.numbers table { margin: 0.75em 0 0; font-size: 0.875rem; }
 
 /* Code */
 

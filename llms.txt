@@ -28,6 +28,6 @@ No posts have been published yet.
 ## Optional
 
 - [About]({{ '/about/' | absolute_url }}): who maintains the projects and how to reach them
-- [{{ site.author.name }}]({{ site.data.authors.mnwa.url }}): the author's page, with links to GitHub, crates.io and Telegram
+- [{{ site.author.name }}]({{ site.data.authors.mnwa.url }}): the author's page, with links to GitHub, crates.io, Telegram and LinkedIn
 - [Full text for LLMs]({{ '/llms-full.txt' | absolute_url }}): every post as plain text in one file
 - [RSS feed]({{ '/feed.xml' | absolute_url }})

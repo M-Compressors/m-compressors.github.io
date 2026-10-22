@@ -40,7 +40,11 @@ Summary:
 {%- capture delim %}{{ nl }}---{{ nl }}{% endcapture -%}
 {%- capture raw %}{% include_relative {{ post.path }} %}{% endcapture -%}
 {%- assign front = raw | split: delim | first -%}
-{{ nl }}{{ raw | remove_first: front | remove_first: delim | strip }}
+{%- assign body = raw | remove_first: front | remove_first: delim | strip -%}
+{%- comment %} Charts are HTML drawn from the tables under them: keep the tables, drop the charts. {% endcomment -%}
+{%- assign parts = body | split: '<figure class="chart"' -%}
+{%- capture body -%}{%- for part in parts -%}{%- if forloop.first -%}{{ part }}{%- else -%}{{ part | split: '</figure>' | last }}{%- endif -%}{%- endfor -%}{%- endcapture -%}
+{{ nl }}{{ body | remove: '<details class="numbers" markdown="1">' | remove: '</details>' | replace: '<summary>', '' | replace: '</summary>', ':' | strip }}
 {%- if post.faq %}
 
 Questions:

@@ -64,25 +64,17 @@ to the same worker. With tokers/zstd-nginx-module at level 19, the 99th percenti
 latency of the small requests rose from 1.9 ms to 198 ms, and to 1.5 s when 8 large
 requests arrived together. With ngx_mzstd on a 4-thread pool it stayed at 1.7–2.0 ms.
 
-<figure class="chart" aria-labelledby="g1-title">
-  <p class="chart-title" id="g1-title">p99 latency of small requests while large responses are compressed, 8 at a time</p>
-  <div class="chart-group">
-    <p>Level 3, react-dom.development.js (1.03 MB), 178 per second</p>
-    <div class="chart-row"><span>No compression</span><span class="chart-track"><span class="chart-bar" style="--w: 0.082"></span><span class="chart-value">1.9 ms</span></span></div>
-    <div class="chart-row"><span>tokers/zstd-nginx-module</span><span class="chart-track"><span class="chart-bar is-stock" style="--w: 0.288"></span><span class="chart-value">9.0 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mzstd, event loop</span><span class="chart-track"><span class="chart-bar is-loop" style="--w: 0.254"></span><span class="chart-value">6.9 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mzstd, pool, 1 task</span><span class="chart-track"><span class="chart-bar is-pool" style="--w: 0.072"></span><span class="chart-value">1.7 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mzstd, pool, 4 tasks</span><span class="chart-track"><span class="chart-bar is-pool" style="--w: 0.080"></span><span class="chart-value">1.8 ms</span></span></div>
+<figure class="chart" id="zstd-latency-burst" aria-labelledby="zstd-latency-burst-title">
+  <p class="chart-title" id="zstd-latency-burst-title">p99 latency of small requests while large responses are compressed</p>
+  <p class="chart-sub">Large requests arrive 8 at a time. ms, logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key  c-stock"></span>tokers/zstd-nginx-module</li><li><span class="key  c-loop"></span>ngx_mzstd, event loop</li><li><span class="key  c-pool1"></span>ngx_mzstd, pool, 1 task</li><li><span class="key  c-pool4"></span>ngx_mzstd, pool, 4 tasks</li><li><span class="key ref"></span>no compression, 1.9 ms</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.2876"></span><span style="--x: 0.5752"></span><span style="--x: 0.8628"></span><span class="ref" style="--x: 0.0802"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">1</span><span class="tick" style="--x: 0.2876">10</span><span class="tick" style="--x: 0.5752">100</span><span class="tick" style="--x: 0.8628">1,000</span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 3, react-dom.development.js (1.03 MB), 178 per second</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.2739"><i title="tokers/zstd-nginx-module: 9.0 ms"></i><b>9.0</b></span><span class="bar c-loop" style="--x: 0.2414"><i title="ngx_mzstd, event loop: 6.9 ms"></i><b>6.9</b></span><span class="bar c-pool1" style="--x: 0.0685"><i title="ngx_mzstd, pool, 1 task: 1.7 ms"></i><b>1.7</b></span><span class="bar c-pool4" style="--x: 0.0755"><i title="ngx_mzstd, pool, 4 tasks: 1.8 ms"></i><b>1.8</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19, react-dom.development.js (1.03 MB), 2 per second</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.9159"><i title="tokers/zstd-nginx-module: 1,530 ms"></i><b>1,530</b></span><span class="bar c-loop" style="--x: 0.8856"><i title="ngx_mzstd, event loop: 1,200 ms"></i><b>1,200</b></span><span class="bar c-pool1" style="--x: 0.0834"><i title="ngx_mzstd, pool, 1 task: 1.9 ms"></i><b>1.9</b></span><span class="bar c-pool4" style="--x: 0.0847"><i title="ngx_mzstd, pool, 4 tasks: 2.0 ms"></i><b>2.0</b></span></span></div>
   </div>
-  <div class="chart-group">
-    <p>Level 19, react-dom.development.js (1.03 MB), 2 per second</p>
-    <div class="chart-row"><span>No compression</span><span class="chart-track"><span class="chart-bar" style="--w: 0.084"></span><span class="chart-value">1.9 ms</span></span></div>
-    <div class="chart-row"><span>tokers/zstd-nginx-module</span><span class="chart-track"><span class="chart-bar is-stock" style="--w: 0.965"></span><span class="chart-value">1,530 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mzstd, event loop</span><span class="chart-track"><span class="chart-bar is-loop" style="--w: 0.933"></span><span class="chart-value">1,200 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mzstd, pool, 1 task</span><span class="chart-track"><span class="chart-bar is-pool" style="--w: 0.088"></span><span class="chart-value">2.0 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mzstd, pool, 4 tasks</span><span class="chart-track"><span class="chart-bar is-pool" style="--w: 0.089"></span><span class="chart-value">2.0 ms</span></span></div>
-  </div>
-  <figcaption>Small uncompressed requests (1.9 KB, 1,000 per second) on the same NGINX worker as the large compressed ones. Logarithmic scale. wrk2 with coordinated omission corrected, median of three 30-second runs, NGINX 1.30.6, one worker, 4 CPUs, a pool of 4 threads.</figcaption>
+  <figcaption>Small uncompressed requests (1.9 KB, 1,000 per second) on the same worker as the large compressed ones. wrk2 with coordinated omission corrected, median of three 30-second runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
 </figure>
 
 The numbers come from a reduced run under WSL2 on 20 October 2026. They are good for
@@ -118,8 +110,8 @@ connection. Meanwhile the event loop serves other connections. The response is s
 one standard zstd frame.
 
 Unlike Brotli segments in [ngx_mbrotli](/2026/ngx-mbrotli-thread-pool-benchmarks/),
-zstd segments are not fully independent. Every segment but the first first runs
-through part of the input before it, so that its matches can reach back across the
+zstd segments are not fully independent. Every segment but the first starts by
+running through the end of the input before it, so that its matches can reach back across the
 boundary. That keeps the compression ratio close to the event loop's, and it costs
 CPU time, as shown [below](#where-the-extra-cpu-time-goes).
 
@@ -149,8 +141,23 @@ shared with `aio threads`. The reason for `4m` is in
 Small uncompressed requests (`small.json`, 1.9 KB) were sent at 1,000 per second over
 32 connections. A second stream requested `react-dom.development.js` (1.03 MB)
 compressed, at a constant rate of about half of what tokers/zstd-nginx-module can
-sustain. All variants kept up with both streams. The p99 latency of the small
-requests, in ms:
+sustain. All variants kept up with both streams.
+
+<figure class="chart" id="zstd-latency-even" aria-labelledby="zstd-latency-even-title">
+  <p class="chart-title" id="zstd-latency-even-title">p99 latency of small requests, large responses one at a time</p>
+  <p class="chart-sub">Large requests arrive on one connection at a constant interval. ms, logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key  c-stock"></span>tokers/zstd-nginx-module</li><li><span class="key  c-loop"></span>ngx_mzstd, event loop</li><li><span class="key  c-pool1"></span>ngx_mzstd, pool, 1 task</li><li><span class="key  c-pool4"></span>ngx_mzstd, pool, 4 tasks</li><li><span class="key ref"></span>no compression, 1.9 ms</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.2876"></span><span style="--x: 0.5752"></span><span style="--x: 0.8628"></span><span class="ref" style="--x: 0.0802"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">1</span><span class="tick" style="--x: 0.2876">10</span><span class="tick" style="--x: 0.5752">100</span><span class="tick" style="--x: 0.8628">1,000</span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 3, react-dom.development.js (1.03 MB), 178 per second</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.1792"><i title="tokers/zstd-nginx-module: 4.2 ms"></i><b>4.2</b></span><span class="bar c-loop" style="--x: 0.1667"><i title="ngx_mzstd, event loop: 3.8 ms"></i><b>3.8</b></span><span class="bar c-pool1" style="--x: 0.0734"><i title="ngx_mzstd, pool, 1 task: 1.8 ms"></i><b>1.8</b></span><span class="bar c-pool4" style="--x: 0.0663"><i title="ngx_mzstd, pool, 4 tasks: 1.7 ms"></i><b>1.7</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19, react-dom.development.js (1.03 MB), 2 per second</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.6605"><i title="tokers/zstd-nginx-module: 198 ms"></i><b>198</b></span><span class="bar c-loop" style="--x: 0.6299"><i title="ngx_mzstd, event loop: 155 ms"></i><b>155</b></span><span class="bar c-pool1" style="--x: 0.0734"><i title="ngx_mzstd, pool, 1 task: 1.8 ms"></i><b>1.8</b></span><span class="bar c-pool4" style="--x: 0.0802"><i title="ngx_mzstd, pool, 4 tasks: 1.9 ms"></i><b>1.9</b></span></span></div>
+  </div>
+  <figcaption>The same test as the chart at the top, with one 30-second run. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Large responses | Arrival | No compression | tokers/zstd | ngx_mzstd, event loop | Pool, 1 task | Pool, 4 tasks |
 |---|---|--:|--:|--:|--:|--:|
@@ -158,6 +165,8 @@ requests, in ms:
 | Level 3, 178 per second | One at a time | 1.9 | 4.2 | 3.8 | 1.8 | 1.7 |
 | Level 19, 2 per second | 8 at once | 1.9 | 1,530 | 1,200 | 2.0 | 2.0 |
 | Level 19, 2 per second | One at a time | 1.9 | 198 | 155 | 1.8 | 1.9 |
+
+</details>
 
 "8 at once" is the large stream's 8 connections, which wrk2 starts together and which
 stay in phase, as when several clients ask for large files at the same moment. "One at
@@ -174,8 +183,36 @@ tokers/zstd-nginx-module.
 
 ## How many requests does one worker serve?
 
-The same worker under closed-loop load: wrk with 8 connections, requests per second,
-the median of three runs. The difference is relative to tokers/zstd-nginx-module.
+The same worker under closed-loop load, with wrk and 8 connections:
+
+<figure class="chart" id="zstd-rps" aria-labelledby="zstd-rps-title">
+  <p class="chart-title" id="zstd-rps-title">Requests per second, relative to tokers/zstd-nginx-module</p>
+  <p class="chart-sub">8 connections. 1 task per response serves about the same as 4. Logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key round c-loop"></span>ngx_mzstd, event loop</li><li><span class="key round c-pool4"></span>ngx_mzstd, pool, 4 tasks</li><li><span class="key ref"></span>tokers/zstd-nginx-module = 1×</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.3758"></span><span style="--x: 0.5637"></span><span style="--x: 0.7516"></span><span style="--x: 0.9395"></span><span class="ref" style="--x: 0.1879"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">0.5×</span><span class="tick" style="--x: 0.1879">1×</span><span class="tick" style="--x: 0.3758">2×</span><span class="tick" style="--x: 0.5637">4×</span><span class="tick" style="--x: 0.7516">8×</span><span class="tick" style="--x: 0.9395">16×</span></span></div>
+    <p class="chart-group">jquery.min.js, 85 KB</p>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot dots"><span class="span" style="--a: 0.2350; --b: 0.5399"></span><span class="dot c-loop" style="--x: 0.2350" title="ngx_mzstd, event loop: 1.2×"></span><span class="dot c-pool4" style="--x: 0.5399" title="ngx_mzstd, pool, 4 tasks: 3.7×"></span><b class="dot-value" style="--x: 0.5399">3.7×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.1792; --b: 0.5396"></span><span class="dot c-loop" style="--x: 0.1792" title="ngx_mzstd, event loop: 0.97×"></span><span class="dot c-pool4" style="--x: 0.5396" title="ngx_mzstd, pool, 4 tasks: 3.7×"></span><b class="dot-value" style="--x: 0.5396">3.7×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot dots"><span class="span" style="--a: 0.5603; --b: 0.9239"></span><span class="dot c-loop" style="--x: 0.5603" title="ngx_mzstd, event loop: 4.0×"></span><span class="dot c-pool4" style="--x: 0.9239" title="ngx_mzstd, pool, 4 tasks: 15.1×"></span><b class="dot-value" style="--x: 0.9239">15.1×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot dots"><span class="span" style="--a: 0.4556; --b: 0.8214"></span><span class="dot c-loop" style="--x: 0.4556" title="ngx_mzstd, event loop: 2.7×"></span><span class="dot c-pool4" style="--x: 0.8214" title="ngx_mzstd, pool, 4 tasks: 10.3×"></span><b class="dot-value" style="--x: 0.8214">10.3×</b></span></div>
+    <p class="chart-group">react-dom.development.js, 1.03 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot dots"><span class="span" style="--a: 0.2277; --b: 0.5335"></span><span class="dot c-loop" style="--x: 0.2277" title="ngx_mzstd, event loop: 1.2×"></span><span class="dot c-pool4" style="--x: 0.5335" title="ngx_mzstd, pool, 4 tasks: 3.6×"></span><b class="dot-value" style="--x: 0.5335">3.6×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.1865; --b: 0.4553"></span><span class="dot c-loop" style="--x: 0.1865" title="ngx_mzstd, event loop: 0.99×"></span><span class="dot c-pool4" style="--x: 0.4553" title="ngx_mzstd, pool, 4 tasks: 2.7×"></span><b class="dot-value" style="--x: 0.4553">2.7×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot dots"><span class="span" style="--a: 0.2634; --b: 0.5517"></span><span class="dot c-loop" style="--x: 0.2634" title="ngx_mzstd, event loop: 1.3×"></span><span class="dot c-pool4" style="--x: 0.5517" title="ngx_mzstd, pool, 4 tasks: 3.8×"></span><b class="dot-value" style="--x: 0.5517">3.8×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot dots"><span class="span" style="--a: 0.2562; --b: 0.5096"></span><span class="dot c-loop" style="--x: 0.2562" title="ngx_mzstd, event loop: 1.3×"></span><span class="dot c-pool4" style="--x: 0.5096" title="ngx_mzstd, pool, 4 tasks: 3.3×"></span><b class="dot-value" style="--x: 0.5096">3.3×</b></span></div>
+    <p class="chart-group">libraries.json, 2.2 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot dots"><span class="span" style="--a: 0.2316; --b: 0.5486"></span><span class="dot c-loop" style="--x: 0.2316" title="ngx_mzstd, event loop: 1.2×"></span><span class="dot c-pool4" style="--x: 0.5486" title="ngx_mzstd, pool, 4 tasks: 3.8×"></span><b class="dot-value" style="--x: 0.5486">3.8×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.1914; --b: 0.4159"></span><span class="dot c-loop" style="--x: 0.1914" title="ngx_mzstd, event loop: 1.0×"></span><span class="dot c-pool4" style="--x: 0.4159" title="ngx_mzstd, pool, 4 tasks: 2.3×"></span><b class="dot-value" style="--x: 0.4159">2.3×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot dots"><span class="span" style="--a: 0.2241; --b: 0.4054"></span><span class="dot c-loop" style="--x: 0.2241" title="ngx_mzstd, event loop: 1.1×"></span><span class="dot c-pool4" style="--x: 0.4054" title="ngx_mzstd, pool, 4 tasks: 2.2×"></span><b class="dot-value" style="--x: 0.4054">2.2×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot dots"><span class="span" style="--a: 0.2473; --b: 0.4541"></span><span class="dot c-loop" style="--x: 0.2473" title="ngx_mzstd, event loop: 1.2×"></span><span class="dot c-pool4" style="--x: 0.4541" title="ngx_mzstd, pool, 4 tasks: 2.7×"></span><b class="dot-value" style="--x: 0.4541">2.7×</b></span></div>
+  </div>
+  <figcaption>wrk, median of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Response | Level | tokers/zstd | ngx_mzstd, event loop | Difference | Pool, 1 task | Difference | Pool, 4 tasks | Difference |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|
@@ -192,6 +229,8 @@ the median of three runs. The difference is relative to tokers/zstd-nginx-module
 | libraries.json, 2.2 MB | 15 | 6.99 | 7.99 | +14% | 18.7 | 2.7× | 15.6 | 2.2× |
 | libraries.json, 2.2 MB | 19 | 2.45 | 3.05 | +24% | 6.54 | 2.7× | 6.54 | 2.7× |
 
+</details>
+
 The pool's 4 threads use the 4 CPUs that one worker in the event loop cannot. On the
 1–2.2 MB files at levels 9–19 the pool gains only 2.1–3.0× over the event loop, because of the extra CPU
 time explained below.
@@ -206,7 +245,25 @@ zstd; that was not verified.
 ## How fast is one large response?
 
 Time to serve one `libraries.json` (2.2 MB, three 1 MiB segments) over one
-connection, in ms, the median of three runs:
+connection:
+
+<figure class="chart" id="zstd-single" aria-labelledby="zstd-single-title">
+  <p class="chart-title" id="zstd-single-title">Time to serve one 2.2 MB response</p>
+  <p class="chart-sub">libraries.json, three 1 MiB segments, one connection. ms, logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key  c-stock"></span>tokers/zstd-nginx-module</li><li><span class="key  c-loop"></span>ngx_mzstd, event loop</li><li><span class="key  c-pool1"></span>ngx_mzstd, pool, 1 task</li><li><span class="key  c-pool4"></span>ngx_mzstd, pool, 4 tasks</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.2876"></span><span style="--x: 0.5752"></span><span style="--x: 0.8628"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">1</span><span class="tick" style="--x: 0.2876">10</span><span class="tick" style="--x: 0.5752">100</span><span class="tick" style="--x: 0.8628">1,000</span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.2196"><i title="tokers/zstd-nginx-module: 5.8 ms"></i><b>5.8</b></span><span class="bar c-loop" style="--x: 0.1985"><i title="ngx_mzstd, event loop: 4.9 ms"></i><b>4.9</b></span><span class="bar c-pool1" style="--x: 0.2152"><i title="ngx_mzstd, pool, 1 task: 5.6 ms"></i><b>5.6</b></span><span class="bar c-pool4" style="--x: 0.1529"><i title="ngx_mzstd, pool, 4 tasks: 3.4 ms"></i><b>3.4</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.3785"><i title="tokers/zstd-nginx-module: 20.7 ms"></i><b>20.7</b></span><span class="bar c-loop" style="--x: 0.3803"><i title="ngx_mzstd, event loop: 21.0 ms"></i><b>21.0</b></span><span class="bar c-pool1" style="--x: 0.4293"><i title="ngx_mzstd, pool, 1 task: 31.1 ms"></i><b>31.1</b></span><span class="bar c-pool4" style="--x: 0.3568"><i title="ngx_mzstd, pool, 4 tasks: 17.4 ms"></i><b>17.4</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.6199"><i title="tokers/zstd-nginx-module: 143 ms"></i><b>143</b></span><span class="bar c-loop" style="--x: 0.6000"><i title="ngx_mzstd, event loop: 122 ms"></i><b>122</b></span><span class="bar c-pool1" style="--x: 0.6291"><i title="ngx_mzstd, pool, 1 task: 154 ms"></i><b>154</b></span><span class="bar c-pool4" style="--x: 0.5578"><i title="ngx_mzstd, pool, 4 tasks: 87 ms"></i><b>87</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.7535"><i title="tokers/zstd-nginx-module: 417 ms"></i><b>417</b></span><span class="bar c-loop" style="--x: 0.7258"><i title="ngx_mzstd, event loop: 334 ms"></i><b>334</b></span><span class="bar c-pool1" style="--x: 0.7897"><i title="ngx_mzstd, pool, 1 task: 557 ms"></i><b>557</b></span><span class="bar c-pool4" style="--x: 0.6901"><i title="ngx_mzstd, pool, 4 tasks: 251 ms"></i><b>251</b></span></span></div>
+  </div>
+  <figcaption>wrk, median of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Level | tokers/zstd | ngx_mzstd, event loop | Pool, 1 task | Pool, 4 tasks |
 |--:|--:|--:|--:|--:|
@@ -215,6 +272,8 @@ connection, in ms, the median of three runs:
 | 15 | 143 | 122 | 154 | 87 |
 | 19 | 417 | 334 | 557 | 251 |
 
+</details>
+
 4 tasks served it 1.6–2.2 times as fast as 1 task, and 1.2–1.7 times as fast as
 tokers/zstd-nginx-module. With 1 task, the pool was 26–67% slower than the event loop
 at levels 9–19: that is the segment overlap. Responses up to 1 MiB fit in one segment,
@@ -222,8 +281,28 @@ so they do not depend on the number of tasks.
 
 ## Where the extra CPU time goes
 
-CPU time per request, including the pool's threads, at 8 connections, in ms, the
-median of three runs:
+
+<figure class="chart" id="zstd-cpu" aria-labelledby="zstd-cpu-title">
+  <p class="chart-title" id="zstd-cpu-title">CPU time per request</p>
+  <p class="chart-sub">Worker and pool threads together, 8 connections. ms, logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key  c-stock"></span>tokers/zstd-nginx-module</li><li><span class="key  c-loop"></span>ngx_mzstd, event loop</li><li><span class="key  c-pool1"></span>ngx_mzstd, pool, 1 task</li><li><span class="key  c-pool4"></span>ngx_mzstd, pool, 4 tasks</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.2876"></span><span style="--x: 0.5752"></span><span style="--x: 0.8628"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">1</span><span class="tick" style="--x: 0.2876">10</span><span class="tick" style="--x: 0.5752">100</span><span class="tick" style="--x: 0.8628">1,000</span></span></div>
+    <p class="chart-group">react-dom.development.js, 1.03 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.1286"><i title="tokers/zstd-nginx-module: 2.8 ms"></i><b>2.8</b></span><span class="bar c-loop" style="--x: 0.1093"><i title="ngx_mzstd, event loop: 2.4 ms"></i><b>2.4</b></span><span class="bar c-pool1" style="--x: 0.1372"><i title="ngx_mzstd, pool, 1 task: 3.0 ms"></i><b>3.0</b></span><span class="bar c-pool4" style="--x: 0.1413"><i title="ngx_mzstd, pool, 4 tasks: 3.1 ms"></i><b>3.1</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.2995"><i title="tokers/zstd-nginx-module: 11.0 ms"></i><b>11.0</b></span><span class="bar c-loop" style="--x: 0.3006"><i title="ngx_mzstd, event loop: 11.1 ms"></i><b>11.1</b></span><span class="bar c-pool1" style="--x: 0.3455"><i title="ngx_mzstd, pool, 1 task: 15.9 ms"></i><b>15.9</b></span><span class="bar c-pool4" style="--x: 0.3494"><i title="ngx_mzstd, pool, 4 tasks: 16.4 ms"></i><b>16.4</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.6624"><i title="tokers/zstd-nginx-module: 201 ms"></i><b>201</b></span><span class="bar c-loop" style="--x: 0.6315"><i title="ngx_mzstd, event loop: 157 ms"></i><b>157</b></span><span class="bar c-pool1" style="--x: 0.6861"><i title="ngx_mzstd, pool, 1 task: 243 ms"></i><b>243</b></span><span class="bar c-pool4" style="--x: 0.6881"><i title="ngx_mzstd, pool, 4 tasks: 247 ms"></i><b>247</b></span></span></div>
+    <p class="chart-group">libraries.json, 2.2 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.3791"><i title="tokers/zstd-nginx-module: 20.8 ms"></i><b>20.8</b></span><span class="bar c-loop" style="--x: 0.3779"><i title="ngx_mzstd, event loop: 20.6 ms"></i><b>20.6</b></span><span class="bar c-pool1" style="--x: 0.4458"><i title="ngx_mzstd, pool, 1 task: 35.5 ms"></i><b>35.5</b></span><span class="bar c-pool4" style="--x: 0.4479"><i title="ngx_mzstd, pool, 4 tasks: 36.1 ms"></i><b>36.1</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.6216"><i title="tokers/zstd-nginx-module: 145 ms"></i><b>145</b></span><span class="bar c-loop" style="--x: 0.6041"><i title="ngx_mzstd, event loop: 126 ms"></i><b>126</b></span><span class="bar c-pool1" style="--x: 0.6714"><i title="ngx_mzstd, pool, 1 task: 216 ms"></i><b>216</b></span><span class="bar c-pool4" style="--x: 0.6979"><i title="ngx_mzstd, pool, 4 tasks: 267 ms"></i><b>267</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.7517"><i title="tokers/zstd-nginx-module: 411 ms"></i><b>411</b></span><span class="bar c-loop" style="--x: 0.7247"><i title="ngx_mzstd, event loop: 331 ms"></i><b>331</b></span><span class="bar c-pool1" style="--x: 0.8023"><i title="ngx_mzstd, pool, 1 task: 616 ms"></i><b>616</b></span><span class="bar c-pool4" style="--x: 0.8041"><i title="ngx_mzstd, pool, 4 tasks: 625 ms"></i><b>625</b></span></span></div>
+  </div>
+  <figcaption>Median of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Response | Level | tokers/zstd | ngx_mzstd, event loop | Pool, 1 task | Pool, 4 tasks |
 |---|--:|--:|--:|--:|--:|
@@ -234,6 +313,8 @@ median of three runs:
 | libraries.json, 2.2 MB | 15 | 145 | 126 | 216 | 267 |
 | libraries.json, 2.2 MB | 19 | 411 | 331 | 616 | 625 |
 
+</details>
+
 At levels 9–19 the pool needed 1.4–2.1 times the CPU time of the event loop, and in
 most cases more than tokers/zstd-nginx-module. Two causes were measured.
 
@@ -242,7 +323,11 @@ compresses and throws away the end of the previous segment, so that its matches 
 reach back. At levels that use the lazy match finders, that is 1/8 of the window: on
 `libraries.json`, 512 KiB for every 1 MiB segment. At levels 19 and above, a segment
 loads the whole window as a prefix. Measured in the library alone, on one thread, with
-1 MiB segments:
+1 MiB segments, `libraries.json` took 1.21–1.69 times the CPU time of the event loop
+at levels 9–19, and 0.79–0.98 times without the overlap.
+
+<details class="numbers" markdown="1">
+<summary>The library measurements as a table</summary>
 
 | Measurement | Level 9 | Level 15 | Level 19 |
 |---|--:|--:|--:|
@@ -253,6 +338,8 @@ loads the whole window as a prefix. Measured in the library alone, on one thread
 | ngx_mzstd, pool, 1 task, 8 connections | 35.5 | 216 | 616 |
 
 CPU time per `libraries.json` response, in ms.
+
+</details>
 
 Without overlap, compressing in segments costs no more than compressing in one piece.
 At 1 connection, ngx_mzstd on the pool costs what the library costs, within 0.1×, so
@@ -274,8 +361,31 @@ same 181 ms.
 
 **Memory.** On a pool, every response being sent holds encoders for its segments
 until it is sent, so peak memory grows with the number of responses in flight and
-the number of tasks per response. The worker's peak resident set size (`VmHWM`) at
-8 connections, in MiB, the highest of three runs:
+the number of tasks per response.
+
+<figure class="chart" id="zstd-memory" aria-labelledby="zstd-memory-title">
+  <p class="chart-title" id="zstd-memory-title">Peak memory of the worker</p>
+  <p class="chart-sub">VmHWM at 8 connections, MiB, logarithmic scale. The labelled value is the pool with 4 tasks.</p>
+  <ul class="chart-legend"><li><span class="key round c-stock"></span>tokers/zstd-nginx-module</li><li><span class="key round c-loop"></span>ngx_mzstd, event loop</li><li><span class="key round c-pool1"></span>ngx_mzstd, pool, 1 task</li><li><span class="key round c-pool4"></span>ngx_mzstd, pool, 4 tasks</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.2222"></span><span style="--x: 0.4444"></span><span style="--x: 0.6667"></span><span style="--x: 0.8889"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">4</span><span class="tick" style="--x: 0.2222">16</span><span class="tick" style="--x: 0.4444">64</span><span class="tick" style="--x: 0.6667">256</span><span class="tick" style="--x: 0.8889">1,024</span></span></div>
+    <p class="chart-group">react-dom.development.js, 1.03 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot dots"><span class="span" style="--a: 0.0650; --b: 0.4494"></span><span class="dot c-stock" style="--x: 0.0650" title="tokers/zstd-nginx-module: 6 MiB"></span><span class="dot c-loop" style="--x: 0.0897" title="ngx_mzstd, event loop: 7 MiB"></span><span class="dot c-pool1" style="--x: 0.4112" title="ngx_mzstd, pool, 1 task: 52 MiB"></span><span class="dot c-pool4" style="--x: 0.4494" title="ngx_mzstd, pool, 4 tasks: 66 MiB"></span><b class="dot-value" style="--x: 0.4494">66 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.2222; --b: 0.6438"></span><span class="dot c-stock" style="--x: 0.2222" title="tokers/zstd-nginx-module: 16 MiB"></span><span class="dot c-loop" style="--x: 0.2222" title="ngx_mzstd, event loop: 16 MiB"></span><span class="dot c-pool1" style="--x: 0.5842" title="ngx_mzstd, pool, 1 task: 153 MiB"></span><span class="dot c-pool4" style="--x: 0.6438" title="ngx_mzstd, pool, 4 tasks: 222 MiB"></span><b class="dot-value" style="--x: 0.6438">222 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot dots"><span class="span" style="--a: 0.3609; --b: 0.7958"></span><span class="dot c-stock" style="--x: 0.4588" title="tokers/zstd-nginx-module: 70 MiB"></span><span class="dot c-loop" style="--x: 0.3609" title="ngx_mzstd, event loop: 38 MiB"></span><span class="dot c-pool1" style="--x: 0.7456" title="ngx_mzstd, pool, 1 task: 419 MiB"></span><span class="dot c-pool4" style="--x: 0.7958" title="ngx_mzstd, pool, 4 tasks: 573 MiB"></span><b class="dot-value" style="--x: 0.7958">573 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot dots"><span class="span" style="--a: 0.3650; --b: 0.7927"></span><span class="dot c-stock" style="--x: 0.4918" title="tokers/zstd-nginx-module: 86 MiB"></span><span class="dot c-loop" style="--x: 0.3650" title="ngx_mzstd, event loop: 39 MiB"></span><span class="dot c-pool1" style="--x: 0.7691" title="ngx_mzstd, pool, 1 task: 485 MiB"></span><span class="dot c-pool4" style="--x: 0.7927" title="ngx_mzstd, pool, 4 tasks: 562 MiB"></span><b class="dot-value" style="--x: 0.7927">562 MiB</b></span></div>
+    <p class="chart-group">libraries.json, 2.2 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot dots"><span class="span" style="--a: 0.0897; --b: 0.4973"></span><span class="dot c-stock" style="--x: 0.0897" title="tokers/zstd-nginx-module: 7 MiB"></span><span class="dot c-loop" style="--x: 0.1111" title="ngx_mzstd, event loop: 8 MiB"></span><span class="dot c-pool1" style="--x: 0.4419" title="ngx_mzstd, pool, 1 task: 63 MiB"></span><span class="dot c-pool4" style="--x: 0.4973" title="ngx_mzstd, pool, 4 tasks: 89 MiB"></span><b class="dot-value" style="--x: 0.4973">89 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.2319; --b: 0.6942"></span><span class="dot c-stock" style="--x: 0.2319" title="tokers/zstd-nginx-module: 17 MiB"></span><span class="dot c-loop" style="--x: 0.2319" title="ngx_mzstd, event loop: 17 MiB"></span><span class="dot c-pool1" style="--x: 0.6120" title="ngx_mzstd, pool, 1 task: 182 MiB"></span><span class="dot c-pool4" style="--x: 0.6942" title="ngx_mzstd, pool, 4 tasks: 304 MiB"></span><b class="dot-value" style="--x: 0.6942">304 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot dots"><span class="span" style="--a: 0.4588; --b: 0.9031"></span><span class="dot c-stock" style="--x: 0.4588" title="tokers/zstd-nginx-module: 70 MiB"></span><span class="dot c-loop" style="--x: 0.4611" title="ngx_mzstd, event loop: 71 MiB"></span><span class="dot c-pool1" style="--x: 0.7815" title="ngx_mzstd, pool, 1 task: 524 MiB"></span><span class="dot c-pool4" style="--x: 0.9031" title="ngx_mzstd, pool, 4 tasks: 1,119 MiB"></span><b class="dot-value" style="--x: 0.9031">1,119 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot dots"><span class="span" style="--a: 0.4230; --b: 0.8787"></span><span class="dot c-stock" style="--x: 0.4937" title="tokers/zstd-nginx-module: 87 MiB"></span><span class="dot c-loop" style="--x: 0.4230" title="ngx_mzstd, event loop: 56 MiB"></span><span class="dot c-pool1" style="--x: 0.7781" title="ngx_mzstd, pool, 1 task: 513 MiB"></span><span class="dot c-pool4" style="--x: 0.8787" title="ngx_mzstd, pool, 4 tasks: 961 MiB"></span><b class="dot-value" style="--x: 0.8787">961 MiB</b></span></div>
+  </div>
+  <figcaption>Highest of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Response | Level | tokers/zstd | ngx_mzstd, event loop | Pool, 1 task | Pool, 4 tasks |
 |---|--:|--:|--:|--:|--:|
@@ -287,6 +397,8 @@ the number of tasks per response. The worker's peak resident set size (`VmHWM`) 
 | libraries.json, 2.2 MB | 9 | 17 | 17 | 182 | 304 |
 | libraries.json, 2.2 MB | 15 | 70 | 71 | 524 | 1,119 |
 | libraries.json, 2.2 MB | 19 | 87 | 56 | 513 | 961 |
+
+</details>
 
 In the event loop, ngx_mzstd needs about as much as tokers/zstd-nginx-module, and less
 at levels 15 and 19. On the pool it needs 6–18 times as much, up to 1.1 GiB.
@@ -304,6 +416,30 @@ at levels 15 and 19. On the pool it needs 6–18 times as much, up to 1.1 GiB.
   within 6% of the event loop's time. The cost: only responses longer than 4 MiB are
   split across threads.
 
+<figure class="chart" id="zstd-segment" aria-labelledby="zstd-segment-title">
+  <p class="chart-title" id="zstd-segment-title">CPU time per request on the pool, relative to the event loop</p>
+  <p class="chart-sub">Pool with 1 task, 8 connections.</p>
+  <ul class="chart-legend"><li><span class="key round ring c-pool1"></span>1m segments (default)</li><li><span class="key round c-pool1"></span>4m segments</li><li><span class="key ref"></span>event loop = 1×</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.5625"></span><span style="--x: 0.8750"></span><span class="ref" style="--x: 0.2500"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick" style="--x: 0.2500">1.0×</span><span class="tick" style="--x: 0.5625">1.5×</span><span class="tick" style="--x: 0.8750">2.0×</span></span></div>
+    <p class="chart-group">react-dom.development.js, 1.03 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot dots"><span class="span" style="--a: 0.2760; --b: 0.4062"></span><span class="dot ring c-pool1" style="--x: 0.4062" title="1m segments: 1.25×"></span><span class="dot c-pool1" style="--x: 0.2760" title="4m segments: 1.04×"></span><b class="dot-value" style="--x: 0.4062">1.25×</b><b class="dot-value left" style="--x: 0.2760">1.04×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.3288; --b: 0.5203"></span><span class="dot ring c-pool1" style="--x: 0.5203" title="1m segments: 1.43×"></span><span class="dot c-pool1" style="--x: 0.3288" title="4m segments: 1.13×"></span><b class="dot-value" style="--x: 0.5203">1.43×</b><b class="dot-value left" style="--x: 0.3288">1.13×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot dots"><span class="span" style="--a: 0.3822; --b: 0.5076"></span><span class="dot ring c-pool1" style="--x: 0.5076" title="1m segments: 1.41×"></span><span class="dot c-pool1" style="--x: 0.3822" title="4m segments: 1.21×"></span><b class="dot-value" style="--x: 0.5076">1.41×</b><b class="dot-value left" style="--x: 0.3822">1.21×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot dots"><span class="span" style="--a: 0.3018; --b: 0.6242"></span><span class="dot ring c-pool1" style="--x: 0.6242" title="1m segments: 1.60×"></span><span class="dot c-pool1" style="--x: 0.3018" title="4m segments: 1.08×"></span><b class="dot-value" style="--x: 0.6242">1.60×</b><b class="dot-value left" style="--x: 0.3018">1.08×</b></span></div>
+    <p class="chart-group">libraries.json, 2.2 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 3</span><span class="plot dots"><span class="span" style="--a: 0.2755; --b: 0.3776"></span><span class="dot ring c-pool1" style="--x: 0.3776" title="1m segments: 1.20×"></span><span class="dot c-pool1" style="--x: 0.2755" title="4m segments: 1.04×"></span><b class="dot-value" style="--x: 0.3776">1.20×</b><b class="dot-value left" style="--x: 0.2755">1.04×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.3501; --b: 0.7172"></span><span class="dot ring c-pool1" style="--x: 0.7172" title="1m segments: 1.75×"></span><span class="dot c-pool1" style="--x: 0.3501" title="4m segments: 1.16×"></span><b class="dot-value" style="--x: 0.7172">1.75×</b><b class="dot-value left" style="--x: 0.3501">1.16×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 15</span><span class="plot dots"><span class="span" style="--a: 0.5972; --b: 0.7262"></span><span class="dot ring c-pool1" style="--x: 0.7262" title="1m segments: 1.76×"></span><span class="dot c-pool1" style="--x: 0.5972" title="4m segments: 1.56×"></span><b class="dot-value" style="--x: 0.7262">1.76×</b><b class="dot-value left" style="--x: 0.5972">1.56×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 19</span><span class="plot dots"><span class="span" style="--a: 0.3520; --b: 0.8580"></span><span class="dot ring c-pool1" style="--x: 0.8580" title="1m segments: 1.97×"></span><span class="dot c-pool1" style="--x: 0.3520" title="4m segments: 1.16×"></span><b class="dot-value" style="--x: 0.8580">1.97×</b><b class="dot-value left" style="--x: 0.3520">1.16×</b></span></div>
+  </div>
+  <figcaption>Median of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
+
 | Response | Level | CPU, event loop | CPU, 1m | CPU, 4m | Peak memory, 1m | Peak memory, 4m |
 |---|--:|--:|--:|--:|--:|--:|
 | react-dom.development.js, 1.03 MB | 3 | 2.4 ms | 3.0 ms | 2.5 ms | 55 MiB | 43 MiB |
@@ -315,7 +451,9 @@ at levels 15 and 19. On the pool it needs 6–18 times as much, up to 1.1 GiB.
 | libraries.json, 2.2 MB | 15 | 126 ms | 222 ms | 196 ms | 527 MiB | 492 MiB |
 | libraries.json, 2.2 MB | 19 | 331 ms | 653 ms | 385 ms | 505 MiB | 414 MiB |
 
-Pool with 1 task, 8 connections. Level 15 on the 2.2 MB file stays at 1.55 times the
+</details>
+
+Pool with 1 task, 8 connections. Level 15 on the 2.2 MB file stays at 1.56 times the
 event loop's CPU time, because of the encoders allocated anew.
 
 - **Raise `zstd_parallel_compressors`** to about the number of responses a worker

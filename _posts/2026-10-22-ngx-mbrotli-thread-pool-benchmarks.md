@@ -66,25 +66,17 @@ worker. With google/ngx_brotli, the 99th percentile latency of the small request
 rose from 1.9 ms to as much as 514 ms. With ngx_mbrotli on a 4-thread pool it stayed
 at 1.7–3.3 ms.
 
-<figure class="chart" aria-labelledby="g1-title">
-  <p class="chart-title" id="g1-title">p99 latency of small requests while large responses are compressed, 8 at a time</p>
-  <div class="chart-group">
-    <p>Level 6, react-dom.development.js (1.03 MB), 31 per second</p>
-    <div class="chart-row"><span>No compression</span><span class="chart-track"><span class="chart-bar" style="--w: 0.086"></span><span class="chart-value">1.9 ms</span></span></div>
-    <div class="chart-row"><span>google/ngx_brotli</span><span class="chart-track"><span class="chart-bar is-stock" style="--w: 0.624"></span><span class="chart-value">115 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mbrotli, event loop</span><span class="chart-track"><span class="chart-bar is-loop" style="--w: 0.598"></span><span class="chart-value">94 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mbrotli, pool, 1 task</span><span class="chart-track"><span class="chart-bar is-pool" style="--w: 0.158"></span><span class="chart-value">3.3 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mbrotli, pool, 4 tasks</span><span class="chart-track"><span class="chart-bar is-pool" style="--w: 0.133"></span><span class="chart-value">2.8 ms</span></span></div>
+<figure class="chart" id="br-latency-burst" aria-labelledby="br-latency-burst-title">
+  <p class="chart-title" id="br-latency-burst-title">p99 latency of small requests while large responses are compressed</p>
+  <p class="chart-sub">Large requests arrive 8 at a time. ms, logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key  c-stock"></span>google/ngx_brotli</li><li><span class="key  c-loop"></span>ngx_mbrotli, event loop</li><li><span class="key  c-pool1"></span>ngx_mbrotli, pool, 1 task</li><li><span class="key  c-pool4"></span>ngx_mbrotli, pool, 4 tasks</li><li><span class="key ref"></span>no compression, 1.9 ms</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.1590"></span><span style="--x: 0.3333"></span><span style="--x: 0.4924"></span><span style="--x: 0.6667"></span><span style="--x: 0.8257"></span><span style="--x: 1.0000"></span><span class="ref" style="--x: 0.0929"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">1</span><span class="tick" style="--x: 0.1590">3</span><span class="tick" style="--x: 0.3333">10</span><span class="tick" style="--x: 0.4924">30</span><span class="tick" style="--x: 0.6667">100</span><span class="tick" style="--x: 0.8257">300</span><span class="tick" style="--x: 1.0000">1000</span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 6, react-dom.development.js (1.03 MB), 31 per second</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.6863"><i title="google/ngx_brotli: 115 ms"></i><b>115</b></span><span class="bar c-loop" style="--x: 0.6576"><i title="ngx_mbrotli, event loop: 94.0 ms"></i><b>94.0</b></span><span class="bar c-pool1" style="--x: 0.1737"><i title="ngx_mbrotli, pool, 1 task: 3.3 ms"></i><b>3.3</b></span><span class="bar c-pool4" style="--x: 0.1464"><i title="ngx_mbrotli, pool, 4 tasks: 2.8 ms"></i><b>2.8</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11, jquery.min.js (85 KB), 7 per second</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.9037"><i title="google/ngx_brotli: 514 ms"></i><b>514</b></span><span class="bar c-loop" style="--x: 0.8284"><i title="ngx_mbrotli, event loop: 306 ms"></i><b>306</b></span><span class="bar c-pool1" style="--x: 0.1003"><i title="ngx_mbrotli, pool, 1 task: 2.0 ms"></i><b>2.0</b></span><span class="bar c-pool4" style="--x: 0.0929"><i title="ngx_mbrotli, pool, 4 tasks: 1.9 ms"></i><b>1.9</b></span></span></div>
   </div>
-  <div class="chart-group">
-    <p>Level 11, jquery.min.js (85 KB), 7 per second</p>
-    <div class="chart-row"><span>No compression</span><span class="chart-track"><span class="chart-bar" style="--w: 0.084"></span><span class="chart-value">1.9 ms</span></span></div>
-    <div class="chart-row"><span>google/ngx_brotli</span><span class="chart-track"><span class="chart-bar is-stock" style="--w: 0.821"></span><span class="chart-value">514 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mbrotli, event loop</span><span class="chart-track"><span class="chart-bar is-loop" style="--w: 0.753"></span><span class="chart-value">306 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mbrotli, pool, 1 task</span><span class="chart-track"><span class="chart-bar is-pool" style="--w: 0.091"></span><span class="chart-value">2.0 ms</span></span></div>
-    <div class="chart-row"><span>ngx_mbrotli, pool, 4 tasks</span><span class="chart-track"><span class="chart-bar is-pool" style="--w: 0.084"></span><span class="chart-value">1.9 ms</span></span></div>
-  </div>
-  <figcaption>Small uncompressed requests (1.9 KB, 1,000 per second) on the same NGINX worker as the large compressed ones. Logarithmic scale. wrk2 with coordinated omission corrected, median of three 30-second runs, NGINX 1.30.6, one worker, 4 CPUs, a pool of 4 threads.</figcaption>
+  <figcaption>Small uncompressed requests (1.9 KB, 1,000 per second) on the same worker as the large compressed ones. wrk2 with coordinated omission corrected, median of three 30-second runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
 </figure>
 
 The numbers come from a reduced run under WSL2 on 20 October 2026. They are good for
@@ -155,8 +147,23 @@ threads per worker, and is shared with `aio threads`.
 Small uncompressed requests (`small.json`, 1.9 KB) were sent at 1,000 per second
 over 32 connections. At the same time, a second stream requested large compressed
 files at a constant rate of about half of what google/ngx_brotli can sustain. All
-variants kept up with both streams. The table gives the p99 latency of the small
-requests, in ms:
+variants kept up with both streams.
+
+<figure class="chart" id="br-latency-even" aria-labelledby="br-latency-even-title">
+  <p class="chart-title" id="br-latency-even-title">p99 latency of small requests, large responses one at a time</p>
+  <p class="chart-sub">Large requests arrive on one connection at a constant interval. ms, logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key  c-stock"></span>google/ngx_brotli</li><li><span class="key  c-loop"></span>ngx_mbrotli, event loop</li><li><span class="key  c-pool1"></span>ngx_mbrotli, pool, 1 task</li><li><span class="key  c-pool4"></span>ngx_mbrotli, pool, 4 tasks</li><li><span class="key ref"></span>no compression, 1.9 ms</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.1590"></span><span style="--x: 0.3333"></span><span style="--x: 0.4924"></span><span style="--x: 0.6667"></span><span style="--x: 0.8257"></span><span style="--x: 1.0000"></span><span class="ref" style="--x: 0.0929"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">1</span><span class="tick" style="--x: 0.1590">3</span><span class="tick" style="--x: 0.3333">10</span><span class="tick" style="--x: 0.4924">30</span><span class="tick" style="--x: 0.6667">100</span><span class="tick" style="--x: 0.8257">300</span><span class="tick" style="--x: 1.0000">1000</span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 6, react-dom.development.js (1.03 MB), 31 per second</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.4101"><i title="google/ngx_brotli: 17.0 ms"></i><b>17.0</b></span><span class="bar c-loop" style="--x: 0.3891"><i title="ngx_mbrotli, event loop: 14.7 ms"></i><b>14.7</b></span><span class="bar c-pool1" style="--x: 0.0768"><i title="ngx_mbrotli, pool, 1 task: 1.7 ms"></i><b>1.7</b></span><span class="bar c-pool4" style="--x: 0.0851"><i title="ngx_mbrotli, pool, 4 tasks: 1.8 ms"></i><b>1.8</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11, jquery.min.js (85 KB), 7 per second</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.6175"><i title="google/ngx_brotli: 71.2 ms"></i><b>71.2</b></span><span class="bar c-loop" style="--x: 0.5533"><i title="ngx_mbrotli, event loop: 45.7 ms"></i><b>45.7</b></span><span class="bar c-pool1" style="--x: 0.0851"><i title="ngx_mbrotli, pool, 1 task: 1.8 ms"></i><b>1.8</b></span><span class="bar c-pool4" style="--x: 0.0929"><i title="ngx_mbrotli, pool, 4 tasks: 1.9 ms"></i><b>1.9</b></span></span></div>
+  </div>
+  <figcaption>The same test as the chart at the top, with one 30-second run. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Large responses | Arrival | No compression | google/ngx_brotli | ngx_mbrotli, event loop | Pool, 1 task | Pool, 4 tasks |
 |---|---|--:|--:|--:|--:|--:|
@@ -164,6 +171,8 @@ requests, in ms:
 | react-dom.development.js, level 6, 31 per second | One at a time | 1.9 | 17.0 | 14.7 | 1.7 | 1.8 |
 | jquery.min.js, level 11, 7 per second | 8 at once | 1.9 | 514 | 306 | 2.0 | 1.9 |
 | jquery.min.js, level 11, 7 per second | One at a time | 1.9 | 71.2 | 45.7 | 1.8 | 1.9 |
+
+</details>
 
 "8 at once" is the large stream's 8 connections, which wrk2 starts together and which
 stay in phase. It is what happens when several clients ask for large files at the same
@@ -179,8 +188,36 @@ a faster encoder.
 
 ## How many requests does one worker serve?
 
-The same worker under closed-loop load: wrk with 8 connections, requests per second,
-the median of three runs. The difference is relative to google/ngx_brotli.
+The same worker under closed-loop load, with wrk and 8 connections:
+
+<figure class="chart" id="br-rps" aria-labelledby="br-rps-title">
+  <p class="chart-title" id="br-rps-title">Requests per second, relative to google/ngx_brotli</p>
+  <p class="chart-sub">8 connections. 1 task per response serves within 3% of 4, except one case. Logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key round c-loop"></span>ngx_mbrotli, event loop</li><li><span class="key round c-pool4"></span>ngx_mbrotli, pool, 4 tasks</li><li><span class="key ref"></span>google/ngx_brotli = 1×</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.3758"></span><span style="--x: 0.5637"></span><span style="--x: 0.7516"></span><span style="--x: 0.9395"></span><span class="ref" style="--x: 0.1879"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">0.5×</span><span class="tick" style="--x: 0.1879">1×</span><span class="tick" style="--x: 0.3758">2×</span><span class="tick" style="--x: 0.5637">4×</span><span class="tick" style="--x: 0.7516">8×</span><span class="tick" style="--x: 0.9395">16×</span></span></div>
+    <p class="chart-group">jquery.min.js, 85 KB</p>
+    <div class="chart-row"><span class="chart-label">Level 4</span><span class="plot dots"><span class="span" style="--a: 0.2263; --b: 0.5780"></span><span class="dot c-loop" style="--x: 0.2263" title="ngx_mbrotli, event loop: 1.2×"></span><span class="dot c-pool4" style="--x: 0.5780" title="ngx_mbrotli, pool, 4 tasks: 4.2×"></span><b class="dot-value" style="--x: 0.5780">4.2×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 6</span><span class="plot dots"><span class="span" style="--a: 0.2009; --b: 0.5483"></span><span class="dot c-loop" style="--x: 0.2009" title="ngx_mbrotli, event loop: 1.0×"></span><span class="dot c-pool4" style="--x: 0.5483" title="ngx_mbrotli, pool, 4 tasks: 3.8×"></span><b class="dot-value" style="--x: 0.5483">3.8×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.5875; --b: 0.9298"></span><span class="dot c-loop" style="--x: 0.5875" title="ngx_mbrotli, event loop: 4.4×"></span><span class="dot c-pool4" style="--x: 0.9298" title="ngx_mbrotli, pool, 4 tasks: 15.4×"></span><b class="dot-value" style="--x: 0.9298">15.4×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11</span><span class="plot dots"><span class="span" style="--a: 0.3215; --b: 0.6905"></span><span class="dot c-loop" style="--x: 0.3215" title="ngx_mbrotli, event loop: 1.6×"></span><span class="dot c-pool4" style="--x: 0.6905" title="ngx_mbrotli, pool, 4 tasks: 6.4×"></span><b class="dot-value" style="--x: 0.6905">6.4×</b></span></div>
+    <p class="chart-group">react-dom.development.js, 1.03 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 4</span><span class="plot dots"><span class="span" style="--a: 0.2253; --b: 0.5512"></span><span class="dot c-loop" style="--x: 0.2253" title="ngx_mbrotli, event loop: 1.1×"></span><span class="dot c-pool4" style="--x: 0.5512" title="ngx_mbrotli, pool, 4 tasks: 3.8×"></span><b class="dot-value" style="--x: 0.5512">3.8×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 6</span><span class="plot dots"><span class="span" style="--a: 0.2350; --b: 0.5872"></span><span class="dot c-loop" style="--x: 0.2350" title="ngx_mbrotli, event loop: 1.2×"></span><span class="dot c-pool4" style="--x: 0.5872" title="ngx_mbrotli, pool, 4 tasks: 4.4×"></span><b class="dot-value" style="--x: 0.5872">4.4×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.3217; --b: 0.6356"></span><span class="dot c-loop" style="--x: 0.3217" title="ngx_mbrotli, event loop: 1.6×"></span><span class="dot c-pool4" style="--x: 0.6356" title="ngx_mbrotli, pool, 4 tasks: 5.2×"></span><b class="dot-value" style="--x: 0.6356">5.2×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11</span><span class="plot dots"><span class="span" style="--a: 0.3099; --b: 0.8007"></span><span class="dot c-loop" style="--x: 0.3099" title="ngx_mbrotli, event loop: 1.6×"></span><span class="dot c-pool4" style="--x: 0.8007" title="ngx_mbrotli, pool, 4 tasks: 9.6×"></span><b class="dot-value" style="--x: 0.8007">9.6×</b></span></div>
+    <p class="chart-group">libraries.json, 2.2 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 4</span><span class="plot dots"><span class="span" style="--a: 0.2237; --b: 0.5585"></span><span class="dot c-loop" style="--x: 0.2237" title="ngx_mbrotli, event loop: 1.1×"></span><span class="dot c-pool4" style="--x: 0.5585" title="ngx_mbrotli, pool, 4 tasks: 3.9×"></span><b class="dot-value" style="--x: 0.5585">3.9×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 6</span><span class="plot dots"><span class="span" style="--a: 0.2274; --b: 0.5863"></span><span class="dot c-loop" style="--x: 0.2274" title="ngx_mbrotli, event loop: 1.2×"></span><span class="dot c-pool4" style="--x: 0.5863" title="ngx_mbrotli, pool, 4 tasks: 4.3×"></span><b class="dot-value" style="--x: 0.5863">4.3×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.2700; --b: 0.5809"></span><span class="dot c-loop" style="--x: 0.2700" title="ngx_mbrotli, event loop: 1.4×"></span><span class="dot c-pool4" style="--x: 0.5809" title="ngx_mbrotli, pool, 4 tasks: 4.3×"></span><b class="dot-value" style="--x: 0.5809">4.3×</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11</span><span class="plot dots"><span class="span" style="--a: 0.3122; --b: 0.8000"></span><span class="dot c-loop" style="--x: 0.3122" title="ngx_mbrotli, event loop: 1.6×"></span><span class="dot c-pool4" style="--x: 0.8000" title="ngx_mbrotli, pool, 4 tasks: 9.6×"></span><b class="dot-value" style="--x: 0.8000">9.6×</b></span></div>
+  </div>
+  <figcaption>wrk, median of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Response | Level | google/ngx_brotli | ngx_mbrotli, event loop | Difference | Pool, 1 task | Difference | Pool, 4 tasks | Difference |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|
@@ -197,6 +234,8 @@ the median of three runs. The difference is relative to google/ngx_brotli.
 | libraries.json, 2.2 MB | 9 | 14.8 | 20.1 | +35% | 63.3 | 4.3× | 63.3 | 4.3× |
 | libraries.json, 2.2 MB | 11 | 0.55 | 0.87 | +58% | 5.11 | 9.3× | 5.26 | 9.6× |
 
+</details>
+
 The pool's 4 threads use the 4 CPUs that google/ngx_brotli, with one worker, cannot.
 That explains about 4× at levels 4–6. The rest comes from the encoder. At level 9
 the C encoder allocates a 32 MiB hash table for every response over 64 KB and frees
@@ -210,8 +249,25 @@ one exception (+17%). The pool's threads were already busy with different respon
 ## How fast is one large response?
 
 More tasks per response help when a response is longer than one segment and nothing
-else competes for the threads. Time to serve one `libraries.json` (2.2 MB, three 1 MiB
-segments) over one connection, in ms, the median of three runs:
+else competes for the threads:
+
+<figure class="chart" id="br-single" aria-labelledby="br-single-title">
+  <p class="chart-title" id="br-single-title">Time to serve one 2.2 MB response</p>
+  <p class="chart-sub">libraries.json, three 1 MiB segments, one connection. ms, logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key  c-stock"></span>google/ngx_brotli</li><li><span class="key  c-loop"></span>ngx_mbrotli, event loop</li><li><span class="key  c-pool1"></span>ngx_mbrotli, pool, 1 task</li><li><span class="key  c-pool4"></span>ngx_mbrotli, pool, 4 tasks</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.2876"></span><span style="--x: 0.5752"></span><span style="--x: 0.8628"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">1</span><span class="tick" style="--x: 0.2876">10</span><span class="tick" style="--x: 0.5752">100</span><span class="tick" style="--x: 0.8628">1,000</span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 4</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.3349"><i title="google/ngx_brotli: 14.6 ms"></i><b>14.6</b></span><span class="bar c-loop" style="--x: 0.3194"><i title="ngx_mbrotli, event loop: 12.9 ms"></i><b>12.9</b></span><span class="bar c-pool1" style="--x: 0.3213"><i title="ngx_mbrotli, pool, 1 task: 13.1 ms"></i><b>13.1</b></span><span class="bar c-pool4" style="--x: 0.2357"><i title="ngx_mbrotli, pool, 4 tasks: 6.6 ms"></i><b>6.6</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 6</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.4273"><i title="google/ngx_brotli: 30.6 ms"></i><b>30.6</b></span><span class="bar c-loop" style="--x: 0.4098"><i title="ngx_mbrotli, event loop: 26.6 ms"></i><b>26.6</b></span><span class="bar c-pool1" style="--x: 0.4030"><i title="ngx_mbrotli, pool, 1 task: 25.2 ms"></i><b>25.2</b></span><span class="bar c-pool4" style="--x: 0.3155"><i title="ngx_mbrotli, pool, 4 tasks: 12.5 ms"></i><b>12.5</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.5290"><i title="google/ngx_brotli: 69.1 ms"></i><b>69.1</b></span><span class="bar c-loop" style="--x: 0.4889"><i title="ngx_mbrotli, event loop: 50.1 ms"></i><b>50.1</b></span><span class="bar c-pool1" style="--x: 0.5003"><i title="ngx_mbrotli, pool, 1 task: 54.9 ms"></i><b>54.9</b></span><span class="bar c-pool4" style="--x: 0.3975"><i title="ngx_mbrotli, pool, 4 tasks: 24.1 ms"></i><b>24.1</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.9496"><i title="google/ngx_brotli: 2,004 ms"></i><b>2,004</b></span><span class="bar c-loop" style="--x: 0.8910"><i title="ngx_mbrotli, event loop: 1,253 ms"></i><b>1,253</b></span><span class="bar c-pool1" style="--x: 0.8303"><i title="ngx_mbrotli, pool, 1 task: 771 ms"></i><b>771</b></span><span class="bar c-pool4" style="--x: 0.7389"><i title="ngx_mbrotli, pool, 4 tasks: 371 ms"></i><b>371</b></span></span></div>
+  </div>
+  <figcaption>wrk, median of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Level | google/ngx_brotli | ngx_mbrotli, event loop | Pool, 1 task | Pool, 4 tasks |
 |--:|--:|--:|--:|--:|
@@ -219,6 +275,8 @@ segments) over one connection, in ms, the median of three runs:
 | 6 | 30.6 | 26.6 | 25.2 | 12.5 |
 | 9 | 69.1 | 50.1 | 54.9 | 24.1 |
 | 11 | 2,004 | 1,253 | 771 | 371 |
+
+</details>
 
 4 tasks served it 2.0–2.3 times as fast as 1 task, and 2.2–5.4 times as fast as
 google/ngx_brotli. Responses up to 1 MiB fit in one segment, so the number of tasks
@@ -242,8 +300,31 @@ responses that are large, compressible and requested rarely enough, not a busy A
 **Memory.** In the event loop, a worker compresses one response at a time and needs
 one encoder. On a pool, every response being sent holds encoders for its segments
 until it is sent. Peak memory then grows with the number of responses in flight and
-with the number of tasks per response. The worker's peak resident set size
-(`VmHWM`) at 8 connections, in MiB, the highest of three runs:
+with the number of tasks per response.
+
+<figure class="chart" id="br-memory" aria-labelledby="br-memory-title">
+  <p class="chart-title" id="br-memory-title">Peak memory of the worker</p>
+  <p class="chart-sub">VmHWM at 8 connections, MiB, logarithmic scale. The labelled value is the pool with 4 tasks.</p>
+  <ul class="chart-legend"><li><span class="key round c-stock"></span>google/ngx_brotli</li><li><span class="key round c-loop"></span>ngx_mbrotli, event loop</li><li><span class="key round c-pool1"></span>ngx_mbrotli, pool, 1 task</li><li><span class="key round c-pool4"></span>ngx_mbrotli, pool, 4 tasks</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.2222"></span><span style="--x: 0.4444"></span><span style="--x: 0.6667"></span><span style="--x: 0.8889"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">4</span><span class="tick" style="--x: 0.2222">16</span><span class="tick" style="--x: 0.4444">64</span><span class="tick" style="--x: 0.6667">256</span><span class="tick" style="--x: 0.8889">1,024</span></span></div>
+    <p class="chart-group">react-dom.development.js, 1.03 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 4</span><span class="plot dots"><span class="span" style="--a: 0.1300; --b: 0.5676"></span><span class="dot c-stock" style="--x: 0.1300" title="google/ngx_brotli: 9 MiB"></span><span class="dot c-loop" style="--x: 0.1761" title="ngx_mbrotli, event loop: 12 MiB"></span><span class="dot c-pool1" style="--x: 0.5412" title="ngx_mbrotli, pool, 1 task: 117 MiB"></span><span class="dot c-pool4" style="--x: 0.5676" title="ngx_mbrotli, pool, 4 tasks: 138 MiB"></span><b class="dot-value" style="--x: 0.5676">138 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 6</span><span class="plot dots"><span class="span" style="--a: 0.1622; --b: 0.5744"></span><span class="dot c-stock" style="--x: 0.1622" title="google/ngx_brotli: 11 MiB"></span><span class="dot c-loop" style="--x: 0.2008" title="ngx_mbrotli, event loop: 14 MiB"></span><span class="dot c-pool1" style="--x: 0.5744" title="ngx_mbrotli, pool, 1 task: 144 MiB"></span><span class="dot c-pool4" style="--x: 0.5733" title="ngx_mbrotli, pool, 4 tasks: 143 MiB"></span><b class="dot-value left" style="--x: 0.5733">143 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.3650; --b: 0.7684"></span><span class="dot c-stock" style="--x: 0.3650" title="google/ngx_brotli: 39 MiB"></span><span class="dot c-loop" style="--x: 0.3731" title="ngx_mbrotli, event loop: 41 MiB"></span><span class="dot c-pool1" style="--x: 0.7681" title="ngx_mbrotli, pool, 1 task: 482 MiB"></span><span class="dot c-pool4" style="--x: 0.7684" title="ngx_mbrotli, pool, 4 tasks: 483 MiB"></span><b class="dot-value" style="--x: 0.7684">483 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11</span><span class="plot dots"><span class="span" style="--a: 0.2938; --b: 0.6899"></span><span class="dot c-stock" style="--x: 0.2938" title="google/ngx_brotli: 25 MiB"></span><span class="dot c-loop" style="--x: 0.3119" title="ngx_mbrotli, event loop: 28 MiB"></span><span class="dot c-pool1" style="--x: 0.6899" title="ngx_mbrotli, pool, 1 task: 296 MiB"></span><span class="dot c-pool4" style="--x: 0.6746" title="ngx_mbrotli, pool, 4 tasks: 269 MiB"></span><b class="dot-value left" style="--x: 0.6746">269 MiB</b></span></div>
+    <p class="chart-group">libraries.json, 2.2 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 4</span><span class="plot dots"><span class="span" style="--a: 0.1300; --b: 0.6387"></span><span class="dot c-stock" style="--x: 0.1300" title="google/ngx_brotli: 9 MiB"></span><span class="dot c-loop" style="--x: 0.2008" title="ngx_mbrotli, event loop: 14 MiB"></span><span class="dot c-pool1" style="--x: 0.5733" title="ngx_mbrotli, pool, 1 task: 143 MiB"></span><span class="dot c-pool4" style="--x: 0.6387" title="ngx_mbrotli, pool, 4 tasks: 215 MiB"></span><b class="dot-value" style="--x: 0.6387">215 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 6</span><span class="plot dots"><span class="span" style="--a: 0.1622; --b: 0.6787"></span><span class="dot c-stock" style="--x: 0.1622" title="google/ngx_brotli: 11 MiB"></span><span class="dot c-loop" style="--x: 0.2008" title="ngx_mbrotli, event loop: 14 MiB"></span><span class="dot c-pool1" style="--x: 0.6349" title="ngx_mbrotli, pool, 1 task: 210 MiB"></span><span class="dot c-pool4" style="--x: 0.6787" title="ngx_mbrotli, pool, 4 tasks: 276 MiB"></span><b class="dot-value" style="--x: 0.6787">276 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot dots"><span class="span" style="--a: 0.3650; --b: 0.8843"></span><span class="dot c-stock" style="--x: 0.3650" title="google/ngx_brotli: 39 MiB"></span><span class="dot c-loop" style="--x: 0.3807" title="ngx_mbrotli, event loop: 43 MiB"></span><span class="dot c-pool1" style="--x: 0.7800" title="ngx_mbrotli, pool, 1 task: 519 MiB"></span><span class="dot c-pool4" style="--x: 0.8843" title="ngx_mbrotli, pool, 4 tasks: 995 MiB"></span><b class="dot-value" style="--x: 0.8843">995 MiB</b></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11</span><span class="plot dots"><span class="span" style="--a: 0.3119; --b: 0.7756"></span><span class="dot c-stock" style="--x: 0.3119" title="google/ngx_brotli: 28 MiB"></span><span class="dot c-loop" style="--x: 0.3230" title="ngx_mbrotli, event loop: 30 MiB"></span><span class="dot c-pool1" style="--x: 0.7341" title="ngx_mbrotli, pool, 1 task: 390 MiB"></span><span class="dot c-pool4" style="--x: 0.7756" title="ngx_mbrotli, pool, 4 tasks: 505 MiB"></span><b class="dot-value" style="--x: 0.7756">505 MiB</b></span></div>
+  </div>
+  <figcaption>Highest of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Response | Level | google/ngx_brotli | ngx_mbrotli, event loop | Pool, 1 task | Pool, 4 tasks |
 |---|--:|--:|--:|--:|--:|
@@ -256,12 +337,35 @@ with the number of tasks per response. The worker's peak resident set size
 | libraries.json, 2.2 MB | 9 | 39 | 43 | 519 | 995 |
 | libraries.json, 2.2 MB | 11 | 28 | 30 | 390 | 505 |
 
+</details>
+
 In the event loop, ngx_mbrotli needs 2–5 MiB more than google/ngx_brotli. On the
 pool, it needs 11–26 times as much.
 
 **CPU time.** CPU time per request, including the pool's threads, was within 0.6–1.4
 times that of the event loop. At level 11 the pool needed 37–40% less, because 1 MiB
 segments compress faster than a whole file. At level 9 it needed 22–40% more.
+
+<figure class="chart" id="br-cpu" aria-labelledby="br-cpu-title">
+  <p class="chart-title" id="br-cpu-title">CPU time per request</p>
+  <p class="chart-sub">Worker and pool threads together, 8 connections. ms, logarithmic scale.</p>
+  <ul class="chart-legend"><li><span class="key  c-stock"></span>google/ngx_brotli</li><li><span class="key  c-loop"></span>ngx_mbrotli, event loop</li><li><span class="key  c-pool1"></span>ngx_mbrotli, pool, 1 task</li><li><span class="key  c-pool4"></span>ngx_mbrotli, pool, 4 tasks</li></ul>
+  <div class="chart-body">
+    <div class="chart-grid" aria-hidden="true"><span style="--x: 0.0000"></span><span style="--x: 0.2876"></span><span style="--x: 0.5752"></span><span style="--x: 0.8628"></span></div>
+    <div class="chart-axis" aria-hidden="true"><span></span><span class="plot"><span class="tick first" style="--x: 0.0000">1</span><span class="tick" style="--x: 0.2876">10</span><span class="tick" style="--x: 0.5752">100</span><span class="tick" style="--x: 0.8628">1,000</span></span></div>
+    <p class="chart-group">react-dom.development.js, 1.03 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 6</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.3463"><i title="google/ngx_brotli: 16.0 ms"></i><b>16.0</b></span><span class="bar c-loop" style="--x: 0.3241"><i title="ngx_mbrotli, event loop: 13.4 ms"></i><b>13.4</b></span><span class="bar c-pool1" style="--x: 0.3314"><i title="ngx_mbrotli, pool, 1 task: 14.2 ms"></i><b>14.2</b></span><span class="bar c-pool4" style="--x: 0.3340"><i title="ngx_mbrotli, pool, 4 tasks: 14.5 ms"></i><b>14.5</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.4677"><i title="google/ngx_brotli: 42.3 ms"></i><b>42.3</b></span><span class="bar c-loop" style="--x: 0.4050"><i title="ngx_mbrotli, event loop: 25.6 ms"></i><b>25.6</b></span><span class="bar c-pool1" style="--x: 0.4469"><i title="ngx_mbrotli, pool, 1 task: 35.8 ms"></i><b>35.8</b></span><span class="bar c-pool4" style="--x: 0.4297"><i title="ngx_mbrotli, pool, 4 tasks: 31.2 ms"></i><b>31.2</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.8806"><i title="google/ngx_brotli: 1,153 ms"></i><b>1,153</b></span><span class="bar c-loop" style="--x: 0.8173"><i title="ngx_mbrotli, event loop: 695 ms"></i><b>695</b></span><span class="bar c-pool1" style="--x: 0.7526"><i title="ngx_mbrotli, pool, 1 task: 414 ms"></i><b>414</b></span><span class="bar c-pool4" style="--x: 0.7529"><i title="ngx_mbrotli, pool, 4 tasks: 415 ms"></i><b>415</b></span></span></div>
+    <p class="chart-group">libraries.json, 2.2 MB</p>
+    <div class="chart-row"><span class="chart-label">Level 9</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.5331"><i title="google/ngx_brotli: 71.4 ms"></i><b>71.4</b></span><span class="bar c-loop" style="--x: 0.4913"><i title="ngx_mbrotli, event loop: 51.1 ms"></i><b>51.1</b></span><span class="bar c-pool1" style="--x: 0.5175"><i title="ngx_mbrotli, pool, 1 task: 63.0 ms"></i><b>63.0</b></span><span class="bar c-pool4" style="--x: 0.5173"><i title="ngx_mbrotli, pool, 4 tasks: 62.9 ms"></i><b>62.9</b></span></span></div>
+    <div class="chart-row"><span class="chart-label">Level 11</span><span class="plot bars"><span class="bar c-stock" style="--x: 0.9738"><i title="google/ngx_brotli: 2,432 ms"></i><b>2,432</b></span><span class="bar c-loop" style="--x: 0.8913"><i title="ngx_mbrotli, event loop: 1,256 ms"></i><b>1,256</b></span><span class="bar c-pool1" style="--x: 0.8332"><i title="ngx_mbrotli, pool, 1 task: 789 ms"></i><b>789</b></span><span class="bar c-pool4" style="--x: 0.8325"><i title="ngx_mbrotli, pool, 4 tasks: 785 ms"></i><b>785</b></span></span></div>
+  </div>
+  <figcaption>Median of three runs. NGINX 1.30.6, one worker on 4 CPUs, a pool of 4 threads; 20 October 2026.</figcaption>
+</figure>
+
+<details class="numbers" markdown="1">
+<summary>Numbers as a table</summary>
 
 | Response | Level | google/ngx_brotli | ngx_mbrotli, event loop | Pool, 1 task | Pool, 4 tasks |
 |---|--:|--:|--:|--:|--:|
@@ -271,7 +375,7 @@ segments compress faster than a whole file. At level 9 it needed 22–40% more.
 | libraries.json, 2.2 MB | 9 | 71.4 | 51.1 | 63.0 | 62.9 |
 | libraries.json, 2.2 MB | 11 | 2,432 | 1,256 | 789 | 785 |
 
-CPU time per request in ms, 8 connections, the median of three runs.
+</details>
 
 **Compression ratio.** Responses longer than one segment came out 0.9–5.2% larger,
 because segments are compressed independently. Responses up to one segment are
