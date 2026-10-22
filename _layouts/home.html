@@ -1,0 +1,51 @@
+---
+layout: default
+---
+<section class="hero" aria-labelledby="hero-title">
+  <h1 id="hero-title" class="lz" data-lz>{{ page.headline }}</h1>
+  <div class="lz-controls" data-lz-controls hidden>
+    <p class="lz-caption" data-lz-caption aria-live="polite"></p>
+    <button type="button" class="lz-toggle" data-lz-toggle aria-controls="hero-title">Decompress</button>
+  </div>
+  <p class="lede">{{ page.description }}</p>
+</section>
+
+<section class="posts" id="posts" aria-labelledby="posts-title">
+  <h2 id="posts-title">Posts</h2>
+  {%- if site.posts.size == 0 %}
+  <p class="empty">No posts yet. Follow the <a href="{{ '/feed.xml' | relative_url }}">RSS feed</a> or <a href="https://github.com/{{ site.github_org }}">watch the projects on GitHub</a> to see the first one.</p>
+  {%- else %}
+  <ol class="post-list" reversed>
+    {%- for post in site.posts %}
+    <li>
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %b %Y" }}</time>
+      <div>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        <p>{{ post.description }}</p>
+      </div>
+    </li>
+    {%- endfor %}
+  </ol>
+  {%- endif %}
+</section>
+
+<section class="projects" id="projects" aria-labelledby="projects-title">
+  <h2 id="projects-title">Projects</h2>
+  <dl class="project-list">
+    {%- for p in site.data.projects %}
+    <div>
+      <dt>
+        <a href="{{ p.repo }}">{{ p.name }}</a>
+        <span class="version">{{ p.kind }}, {{ p.version }}</span>
+      </dt>
+      <dd>
+        {{ p.summary }}
+        {%- if p.crate %} <a class="aside-link" href="{{ p.crate }}">crates.io</a>{% endif %}
+        {%- if p.docs %} <a class="aside-link" href="{{ p.docs }}">docs.rs</a>{% endif %}
+      </dd>
+    </div>
+    {%- endfor %}
+  </dl>
+</section>
+
+<script src="{{ '/assets/js/lz.js' | relative_url }}" defer></script>

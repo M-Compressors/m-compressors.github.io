@@ -1,0 +1,32 @@
+---
+layout: null
+sitemap: false
+---
+# {{ site.title }}
+
+> {{ site.description | strip }}
+
+{{ site.title }} is an open-source organization on GitHub ({{ 'https://github.com/' | append: site.github_org }}) maintained by {{ site.author.name }}. Its codecs are written in Rust with `unsafe` forbidden in production code. Key facts:
+
+- mbrotli writes the same bytes as Google Brotli 1.2.0 at qualities 0–11 under equivalent streaming settings. In the independent lzbench 2.4 run (Silesia corpus, one core of an AMD EPYC 9555P) mbrotli 0.5.2 compressed 14–20% faster than Google Brotli at qualities 8 and 11, with the same compressed size; decompression was 3–10% slower.
+- mzstd's single-threaded output is byte-identical to zstd 1.5.7 at levels -131072 to 22. In the project's own benchmarks it compresses at a median 1.112× and decompresses at 1.111× zstd's speed.
+- ngx_mbrotli and ngx_mzstd are drop-in replacements for google/ngx_brotli and tokers/zstd-nginx-module that can compress on NGINX thread pools (`brotli_thread_pool default;`, `zstd_thread_pool default;`).
+
+## Projects
+{% for p in site.data.projects %}
+- [{{ p.name }}]({{ p.repo }}): {{ p.kind }}, version {{ p.version }}, {{ p.license }}. {{ p.summary | strip }}{% if p.crate %} Crate: {{ p.crate }}{% endif %}{% if p.docs %}, API docs: {{ p.docs }}{% endif %}
+{%- endfor %}
+
+## Posts
+{% for post in site.posts %}
+- [{{ post.title }}]({{ post.url | absolute_url }}): {{ post.description | strip }}
+{%- endfor %}
+{%- if site.posts.size == 0 %}
+No posts have been published yet.
+{%- endif %}
+
+## Optional
+
+- [About]({{ '/about/' | absolute_url }}): who maintains the projects and how to reach them
+- [Full text for LLMs]({{ '/llms-full.txt' | absolute_url }}): every post as plain text in one file
+- [RSS feed]({{ '/feed.xml' | absolute_url }})

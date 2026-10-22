@@ -1,8 +1,61 @@
-title: M-Compressors Blog
-description: Blog about open source compressors and decompressors
+title: M-Compressors
+tagline: Compression codecs in safe Rust
+description: >-
+  Engineering blog of M-Compressors: Brotli and Zstandard rewritten in safe Rust,
+  byte-identical to the C reference encoders, plus NGINX modules that compress on
+  thread pools. Benchmarks, design notes and release write-ups.
 url: https://m-compressors.github.io
-theme: minima
+baseurl: ""
+lang: en_US
+timezone: Europe/Moscow
+
+author:
+  name: Mikhail Panfilov
+  url: https://github.com/Mnwa
+
+github_org: M-Compressors
+
+# jekyll-seo-tag
+logo: /assets/img/logo.png
+social:
+  name: M-Compressors
+  links:
+    - https://github.com/M-Compressors
+    - https://crates.io/users/Mnwa
+
+permalink: /:year/:title/
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter_opts:
+    disable: false
+
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
+
+feed:
+  path: feed.xml
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      image: /assets/img/og.png
+  - scope:
+      path: ""
+    values:
+      layout: page
+      image: /assets/img/og.png
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - .jekyll-cache

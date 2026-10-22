@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="{{ site.lang | slice: 0, 2 | default: 'en' }}">
+{% include head.html %}
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="{{ '/' | relative_url }}" {% if page.url == "/" %}aria-current="page"{% endif %}>M-Compressors</a>
+    <nav aria-label="Main">
+      <a href="{{ '/#posts' | relative_url }}">Posts</a>
+      <a href="{{ '/#projects' | relative_url }}">Projects</a>
+      <a href="{{ '/about/' | relative_url }}" {% if page.url == "/about/" %}aria-current="page"{% endif %}>About</a>
+      <a href="https://github.com/{{ site.github_org }}">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <p>Written by <a href="{{ site.author.url }}" rel="author">{{ site.author.name }}</a>. Code in our projects is MIT or Apache-2.0; text here may be quoted with a link back.</p>
+    <ul>
+      <li><a href="{{ '/feed.xml' | relative_url }}">RSS feed</a></li>
+      <li><a href="{{ '/llms.txt' | relative_url }}">llms.txt</a></li>
+      <li><a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a></li>
+    </ul>
+  </footer>
+</body>
+</html>

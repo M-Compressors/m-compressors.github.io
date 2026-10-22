@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .b { fill: none; stroke: #0E7C6B; }
+    .m { fill: none; stroke: #17262B; }
+    @media (prefers-color-scheme: dark) { .b { stroke: #4CC2AC; } .m { stroke: #DCE6E3; } }
+  </style>
+  <rect class="b" x="2.5" y="7.5" width="27" height="17" rx="3" stroke-width="3"/>
+  <path class="m" d="M11 21V11.5l5 6 5-6V21" stroke-width="2.6" stroke-linejoin="miter"/>
+</svg>

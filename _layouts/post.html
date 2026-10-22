@@ -1,0 +1,82 @@
+---
+layout: default
+---
+{%- assign words = content | strip_html | number_of_words -%}
+{%- assign minutes = words | divided_by: 220 | at_least: 1 -%}
+<article class="post">
+  <header class="post-head">
+    <h1>{{ page.title }}</h1>
+    <p class="standfirst">{{ page.description }}</p>
+  </header>
+
+  <aside class="margin" aria-label="About this post">
+    <dl>
+      <div>
+        <dt>Published</dt>
+        <dd><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%-d %B %Y" }}</time></dd>
+      </div>
+      {%- if page.last_modified_at %}
+      <div>
+        <dt>Updated</dt>
+        <dd><time datetime="{{ page.last_modified_at | date_to_xmlschema }}">{{ page.last_modified_at | date: "%-d %B %Y" }}</time></dd>
+      </div>
+      {%- endif %}
+      <div>
+        <dt>Author</dt>
+        <dd><a href="{{ site.author.url }}" rel="author"><span>{{ site.author.name }}</span></a></dd>
+      </div>
+      <div>
+        <dt>Reading time</dt>
+        <dd>{{ minutes }} min</dd>
+      </div>
+      {%- if page.projects %}
+      <div>
+        <dt>Projects</dt>
+        <dd>
+          {%- for name in page.projects %}
+          {%- assign p = site.data.projects | where: "name", name | first %}
+          <a href="{{ p.repo }}">{{ p.name }} {{ p.version }}</a>{% unless forloop.last %}<br>{% endunless %}
+          {%- endfor %}
+        </dd>
+      </div>
+      {%- endif %}
+    </dl>
+  </aside>
+
+  {%- if page.summary %}
+  <section class="summary" aria-labelledby="summary-title">
+    <h2 id="summary-title">Summary</h2>
+    <ul>
+      {%- for line in page.summary %}
+      <li>{{ line | markdownify | remove: "<p>" | remove: "</p>" | strip }}</li>
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endif %}
+
+  <div class="prose">
+    {{ content }}
+  </div>
+
+  {%- if page.faq %}
+  <section class="faq prose" id="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions</h2>
+    {%- for item in page.faq %}
+    <details>
+      <summary>{{ item.q }}</summary>
+      {{ item.a | markdownify }}
+    </details>
+    {%- endfor %}
+  </section>
+  {%- endif %}
+
+  <section class="cite" aria-labelledby="cite-title">
+    <h2 id="cite-title">Cite this post</h2>
+    <p>{{ site.author.name }}. “{{ page.title }}.” {{ site.title }}, {{ page.date | date: "%-d %B %Y" }}. <a href="{{ page.url | absolute_url }}">{{ page.url | absolute_url }}</a></p>
+  </section>
+
+  <nav class="post-nav" aria-label="More posts">
+    {%- if page.previous %}<a rel="prev" href="{{ page.previous.url | relative_url }}"><span>Older</span>{{ page.previous.title }}</a>{% endif %}
+    {%- if page.next %}<a rel="next" href="{{ page.next.url | relative_url }}"><span>Newer</span>{{ page.next.title }}</a>{% endif %}
+  </nav>
+</article>

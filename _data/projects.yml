@@ -1,0 +1,50 @@
+- name: mbrotli
+  license: MIT OR Apache-2.0
+  kind: Rust crate
+  version: 0.5.16
+  summary: >-
+    Google Brotli in safe Rust: encoder ported from the C reference with the same
+    output at qualities 0–11, a native decoder, Read/Write adapters and parallel
+    compression on your own threads.
+  repo: https://github.com/M-Compressors/mbrotli
+  crate: https://crates.io/crates/mbrotli
+  docs: https://docs.rs/mbrotli
+
+- name: mzstd
+  license: MIT OR Apache-2.0
+  kind: Rust crate
+  version: 0.2.8
+  summary: >-
+    Zstandard (RFC 8878) in safe Rust: single-threaded output byte-identical to
+    zstd 1.5.7, a decoder written from the specification, no_std and a C ABI.
+  repo: https://github.com/M-Compressors/mzstd
+  crate: https://crates.io/crates/mzstd
+  docs: https://docs.rs/mzstd
+
+- name: ngx_mbrotli
+  license: MIT
+  kind: NGINX module
+  version: 0.4.4
+  summary: >-
+    Drop-in replacement for google/ngx_brotli that can compress on NGINX thread
+    pools, so large responses no longer block the worker's event loop.
+  repo: https://github.com/M-Compressors/ngx_mbrotli
+
+- name: ngx_mzstd
+  license: MIT
+  kind: NGINX module
+  version: 0.2.3
+  summary: >-
+    Drop-in replacement for tokers/zstd-nginx-module with encoder reuse and
+    thread-pool compression.
+  repo: https://github.com/M-Compressors/ngx_mzstd
+
+- name: borrowed-buf
+  license: MIT
+  kind: Rust crate
+  version: 0.1.1
+  summary: >-
+    A small no_std port of the nightly-only core::io::BorrowedBuf and
+    BorrowedCursor for stable Rust 1.89.
+  repo: https://github.com/M-Compressors/borrowed-buf
+  crate: https://crates.io/crates/borrowed-buf

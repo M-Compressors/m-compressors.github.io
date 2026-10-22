@@ -1,0 +1,21 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F3F5F4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0F1B1E" media="(prefers-color-scheme: dark)">
+  {% seo %}
+  {% if page.layout == "post" %}
+  <meta property="article:author" content="{{ site.author.url }}">
+  {% if page.tags %}{% for tag in page.tags %}<meta property="article:tag" content="{{ tag }}">
+  {% endfor %}{% endif %}
+  {% endif %}
+  {% feed_meta %}
+  <link rel="alternate" type="text/plain" title="llms.txt" href="{{ '/llms.txt' | relative_url }}">
+  <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  {% include jsonld.html %}
+</head>

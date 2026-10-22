@@ -1,0 +1,50 @@
+---
+layout: null
+sitemap: false
+---
+# {{ site.title }}: full text
+
+> {{ site.description | strip }}
+
+Source: {{ site.url }}. Author: {{ site.author.name }} ({{ site.author.url }}). Quote freely with a link to the post's URL.
+
+## Projects
+{% for p in site.data.projects %}
+### {{ p.name }}
+
+{{ p.kind }}, version {{ p.version }}, license {{ p.license }}.
+{{ p.summary | strip }}
+Repository: {{ p.repo }}{% if p.crate %}
+Crate: {{ p.crate }}{% endif %}{% if p.docs %}
+API docs: {{ p.docs }}{% endif %}
+{% endfor %}
+{%- for post in site.posts %}
+---
+
+## {{ post.title }}
+
+URL: {{ post.url | absolute_url }}
+Published: {{ post.date | date: "%Y-%m-%d" }}
+{%- if post.last_modified_at %}
+Updated: {{ post.last_modified_at | date: "%Y-%m-%d" }}{% endif %}
+
+{{ post.description | strip }}
+{% if post.summary %}
+Summary:
+{% for line in post.summary %}
+- {{ line | markdownify | strip_html | strip }}
+{%- endfor %}
+{% endif %}
+{%- capture nl %}
+{% endcapture -%}
+{%- assign body = post.content | replace: "</p>", nl | replace: "</h2>", nl | replace: "</h3>", nl | replace: "</li>", nl | replace: "<li>", "- " | replace: "</tr>", nl | replace: "</td>", " | " | replace: "</th>", " | " | replace: "</pre>", nl -%}
+{{ body | strip_html | replace: "&lt;", "<" | replace: "&gt;", ">" | replace: "&quot;", '"' | replace: "&#39;", "'" | replace: "&amp;", "&" | strip }}
+{%- if post.faq %}
+
+Questions:
+{% for item in post.faq %}
+Q: {{ item.q }}
+A: {{ item.a | markdownify | strip_html | strip }}
+{% endfor %}
+{%- endif %}
+{% endfor %}
