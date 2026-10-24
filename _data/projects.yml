@@ -1,7 +1,7 @@
 - name: mbrotli
   license: MIT OR Apache-2.0
   kind: Rust crate
-  version: 0.5.16
+  version: 0.5.17
   summary: >-
     Google Brotli in safe Rust: encoder ported from the C reference with the same
     output at qualities 0–11, a native decoder, Read/Write adapters and parallel
