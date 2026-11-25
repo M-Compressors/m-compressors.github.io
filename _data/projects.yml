@@ -27,10 +27,10 @@
 - name: mzstd
   license: MIT OR Apache-2.0
   kind: Rust crate
-  version: 0.2.8
+  version: 0.2.16
   summary: >-
     Zstandard (RFC 8878) in safe Rust: single-threaded output byte-identical to
-    zstd 1.5.7, a decoder written from the specification, no_std and a C ABI.
+    zstd 1.6.0, a decoder written from the specification, no_std and a C ABI.
   site: https://m-compressors.github.io/mzstd/
   repo: https://github.com/M-Compressors/mzstd
   crate: https://crates.io/crates/mzstd
@@ -60,7 +60,7 @@
 - name: ngx_mzstd
   license: MIT
   kind: NGINX module
-  version: 0.2.3
+  version: 0.2.7
   summary: >-
     Drop-in replacement for tokers/zstd-nginx-module with encoder reuse and
     thread-pool compression.
