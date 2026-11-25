@@ -1,0 +1,18 @@
+---
+layout: null
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- comment %}
+  Project sites are separate mdBook builds served under this host
+  (/mbook/, /mbrotli/, ...). jekyll-sitemap only lists pages this repo builds,
+  so they get their own sitemap, generated from _data/projects.yml and listed
+  in robots.txt. No lastmod: this repo is not rebuilt when those sites change.
+{%- endcomment %}
+{%- for p in site.data.projects %}{% if p.site %}
+<url>
+<loc>{{ p.site | xml_escape }}</loc>
+</url>
+{%- endif %}{% endfor %}
+</urlset>

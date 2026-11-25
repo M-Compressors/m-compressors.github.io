@@ -38,7 +38,7 @@ layout: default
     <h2>Projects</h2>
     <ul>
       {%- for p in site.data.projects %}
-      <li><a href="{{ p.repo }}">{{ p.name }}</a>: {{ p.summary | strip }}</li>
+      <li><a href="{{ p.site | default: p.repo }}">{{ p.name }}</a>: {{ p.summary | strip }}</li>
       {%- endfor %}
     </ul>
   </div>

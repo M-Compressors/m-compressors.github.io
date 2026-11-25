@@ -14,7 +14,7 @@ sitemap: false
 
 ## Projects
 {% for p in site.data.projects %}
-- [{{ p.name }}]({{ p.repo }}): {{ p.kind }}, version {{ p.version }}, {{ p.license }}. {{ p.summary | strip }}{% if p.crate %} Crate: {{ p.crate }}{% endif %}{% if p.docs %}, API docs: {{ p.docs }}{% endif %}
+- [{{ p.name }}]({{ p.site | default: p.repo }}): {{ p.kind }}, version {{ p.version }}, {{ p.license }}. {{ p.summary | strip }}{% if p.site %} Repository: {{ p.repo }}.{% endif %}{% if p.crate %} Crate: {{ p.crate }}{% endif %}{% if p.docs %}, API docs: {{ p.docs }}{% endif %}
 {%- endfor %}
 
 ## Posts

@@ -1,3 +1,16 @@
+- name: mbook
+  license: MIT OR Apache-2.0
+  kind: Rust library and app
+  version: 0.3.7
+  summary: >-
+    Modern e-book format with Markdown, AVIF and OpenZL compression: 4× smaller
+    than EPUB, opens in 0.1 ms, decodes only what's on screen. Library, converter
+    and reader app in safe Rust.
+  site: https://m-compressors.github.io/mbook/
+  repo: https://github.com/M-Compressors/mbook
+  crate: https://crates.io/crates/mbook
+  docs: https://docs.rs/mbook
+
 - name: mbrotli
   license: MIT OR Apache-2.0
   kind: Rust crate
@@ -6,6 +19,7 @@
     Google Brotli in safe Rust: encoder ported from the C reference with the same
     output at qualities 0–11, a native decoder, Read/Write adapters and parallel
     compression on your own threads.
+  site: https://m-compressors.github.io/mbrotli/
   repo: https://github.com/M-Compressors/mbrotli
   crate: https://crates.io/crates/mbrotli
   docs: https://docs.rs/mbrotli
@@ -17,9 +31,22 @@
   summary: >-
     Zstandard (RFC 8878) in safe Rust: single-threaded output byte-identical to
     zstd 1.5.7, a decoder written from the specification, no_std and a C ABI.
+  site: https://m-compressors.github.io/mzstd/
   repo: https://github.com/M-Compressors/mzstd
   crate: https://crates.io/crates/mzstd
   docs: https://docs.rs/mzstd
+
+- name: mopenzl
+  license: MIT OR Apache-2.0
+  kind: Rust crate
+  version: 0.2.6
+  summary: >-
+    OpenZL compression and decompression in safe Rust, with byte-identical
+    encoding and parallel compression.
+  site: https://m-compressors.github.io/mopenzl/
+  repo: https://github.com/M-Compressors/mopenzl
+  crate: https://crates.io/crates/mopenzl
+  docs: https://docs.rs/mopenzl
 
 - name: ngx_mbrotli
   license: MIT

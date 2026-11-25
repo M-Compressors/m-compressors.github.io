@@ -53,6 +53,9 @@
       "@id": {{ p.repo | append: "#software" | jsonify }},
       "name": {{ p.name | jsonify }},
       "description": {{ p.summary | strip | jsonify }},
+      {%- if p.site %}
+      "url": {{ p.site | jsonify }},
+      {%- endif %}
       "codeRepository": {{ p.repo | jsonify }},
       "programmingLanguage": "Rust",
       "version": {{ p.version | jsonify }},

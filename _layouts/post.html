@@ -39,7 +39,7 @@ layout: default
         <dd>
           {%- for name in page.projects %}
           {%- assign p = site.data.projects | where: "name", name | first %}
-          <a href="{{ p.repo }}">{{ p.name }} {{ p.version }}</a>{% unless forloop.last %}<br>{% endunless %}
+          <a href="{{ p.site | default: p.repo }}">{{ p.name }} {{ p.version }}</a>{% unless forloop.last %}<br>{% endunless %}
           {%- endfor %}
         </dd>
       </div>

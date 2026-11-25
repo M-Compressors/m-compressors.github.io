@@ -12,7 +12,7 @@ single output byte where that is possible.
 ## Projects
 
 {% for p in site.data.projects -%}
-- **[{{ p.name }}]({{ p.repo }})**, {{ p.kind | downcase }}: {{ p.summary | strip }}
+- **[{{ p.name }}]({{ p.site | default: p.repo }})**, {{ p.kind | downcase }}: {{ p.summary | strip }}
 {% endfor %}
 
 ## What "byte-identical" means here

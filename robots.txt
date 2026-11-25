@@ -35,3 +35,4 @@ User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: {{ '/sitemap.xml' | absolute_url }}
+Sitemap: {{ '/sitemap-projects.xml' | absolute_url }}

@@ -14,7 +14,8 @@ Source: {{ site.url }}. Author: {{ site.author.name }} ({{ site.author.url }}). 
 
 {{ p.kind }}, version {{ p.version }}, license {{ p.license }}.
 {{ p.summary | strip }}
-Repository: {{ p.repo }}{% if p.crate %}
+{% if p.site %}Website: {{ p.site }}
+{% endif %}Repository: {{ p.repo }}{% if p.crate %}
 Crate: {{ p.crate }}{% endif %}{% if p.docs %}
 API docs: {{ p.docs }}{% endif %}
 {% endfor %}
